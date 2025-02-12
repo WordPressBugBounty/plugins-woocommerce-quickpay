@@ -27,7 +27,12 @@ General:
 3. If WooCommerce Subscriptions is used, the required minimum version is >= 5.0
 
 == Changelog ==
-= 7.3.4=
+= 7.3.5 =
+* Fix: woocommerce_quickpay_get_order now makes a specific check on WC_Order instance to avoid possible direct property access on a WC_Order object.
+* Fix: add check in callback handler to avoid payment failed transitioning on orders and subscriptions that does not actually require a payment.
+* Fix: add extra check on qp_status_code in callback handler to avoid possible incorrect logging when refunds or captures fail.
+
+= 7.3.4 =
 * Fix: MobilePay Subscriptions now calls WC_Subscription::cancel_order to leverage support of pending-cancel/cancelled logic when setting "Cancelled agreement status" to 'Cancelled'.
 * Fix: Change QuickPay to Quickpay in text strings
 * Fix: Bump tested with WC version to 8.9

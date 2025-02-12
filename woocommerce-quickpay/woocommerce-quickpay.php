@@ -3,7 +3,7 @@
  * Plugin Name: WooCommerce Quickpay
  * Plugin URI: http://wordpress.org/plugins/woocommerce-quickpay/
  * Description: Integrates your Quickpay payment gateway into your WooCommerce installation.
- * Version: 7.3.4
+ * Version: 7.3.5
  * Author: Perfect Solution
  * Text Domain: woo-quickpay
  * Domain Path: /languages/
@@ -19,7 +19,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'WCQP_VERSION', '7.3.4' );
+define( 'WCQP_VERSION', '7.3.5' );
 define( 'WCQP_URL', plugins_url( __FILE__ ) );
 define( 'WCQP_PATH', plugin_dir_path( __FILE__ ) );
 
@@ -783,6 +783,7 @@ function init_quickpay_gateway() {
 				// Fetch subscription post ID if present
 				$subscription_id = WC_QuickPay_Callbacks::get_subscription_id_from_callback( $json );
 				$subscription    = null;
+
 				if ( $subscription_id !== null ) {
 					$subscription = woocommerce_quickpay_get_subscription( $subscription_id );
 				}
@@ -796,7 +797,7 @@ function init_quickpay_gateway() {
 
 					// Is the transaction accepted and approved by QP / Acquirer?
 					// Did we find an order?
-					if ( $json->accepted && $order ) {
+					if ( $json->accepted && $order && in_array( (int) $transaction->qp_status_code, [ 20000, 20200 ], true ) ) {
 						do_action( 'woocommerce_quickpay_accepted_callback_before_processing', $order, $json );
 						do_action( 'woocommerce_quickpay_accepted_callback_before_processing_status_' . $transaction->type, $order, $json );
 
@@ -822,7 +823,7 @@ function init_quickpay_gateway() {
 									break;
 
 								case 'refund' :
-									$order->add_order_note( sprintf( __( 'Refunded %s %s', 'woo-quickpay' ), WC_QuickPay_Helper::price_normalize( $transaction->amount, $json->currency ), $json->currency ) );
+									$order->add_order_note( sprintf( 'Quickpay: ' . __( 'Refunded %s %s', 'woo-quickpay' ), WC_QuickPay_Helper::price_normalize( $transaction->amount, $json->currency ), $json->currency ) );
 									break;
 
 								case 'recurring':
@@ -864,7 +865,7 @@ function init_quickpay_gateway() {
 							'request'        => $request_body,
 						] );
 
-						if ( $order && ( $transaction->type === 'recurring' || 'rejected' !== $json->state ) ) {
+						if ( $order && $order->needs_payment() && ( $transaction->type === 'recurring' || 'rejected' !== $json->state ) ) {
 							$order->update_status( 'failed', sprintf( 'Payment failed <br />QuickPay Message: %s<br />Acquirer Message: %s', $transaction->qp_status_msg, $transaction->aq_status_msg ) );
 						}
 					}

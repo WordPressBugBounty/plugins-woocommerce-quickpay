@@ -59,7 +59,7 @@ class WC_QuickPay_Callbacks {
 		if ( apply_filters( 'woocommerce_quickpay_complete_order_on_capture', $complete, $order, $transaction ) ) {
 			$order->update_status( 'completed', $capture_note );
 		} else {
-			$order->add_order_note( $capture_note );
+			$order->add_order_note( 'Quickpay: ' . $capture_note );
 		}
 
 		do_action( 'woocommerce_quickpay_callback_payment_captured', $order, $transaction );

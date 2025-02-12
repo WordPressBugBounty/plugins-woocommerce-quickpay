@@ -92,8 +92,13 @@ function woocommerce_quickpay_create_payment_link( $order, bool $force_update = 
  * @return WC_Order
  */
 function woocommerce_quickpay_get_order( $order ): ?WC_Order {
+
 	if ( ! is_object( $order ) ) {
 		return wc_get_order( $order ) ?: null;
+	}
+
+	if ( $order instanceof WC_Order ) {
+		return $order;
 	}
 
 	if ( $order instanceof WP_Post ) {
