@@ -112,6 +112,22 @@ class WC_QuickPay_Subscription {
 	}
 
 	/**
+	 * @param $order
+	 * @param array $args
+	 *
+	 * @return WC_Subscription|null
+	 */
+	public static function get_last_subscription_for_order( $order, array $args = [] ): ?WC_Subscription {
+		$subscriptions = self::get_subscriptions_for_order( $order, $args );
+
+		if ( ! empty( $subscriptions ) ) {
+			return end( $subscriptions );
+		}
+
+		return null;
+	}
+
+	/**
 	 * @param WC_Order $order
 	 *
 	 * @return int|null
@@ -134,6 +150,7 @@ class WC_QuickPay_Subscription {
 		if ( self::is_renewal( $order ) && $subscriptions = self::get_subscriptions_for_order( $order, [ 'order_type' => [ 'renewal' ] ] ) ) {
 			return end( $subscriptions )->get_id();
 		}
+
 		return null;
 	}
 

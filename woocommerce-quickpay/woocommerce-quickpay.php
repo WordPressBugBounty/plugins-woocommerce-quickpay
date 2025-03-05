@@ -3,7 +3,7 @@
  * Plugin Name: WooCommerce Quickpay
  * Plugin URI: http://wordpress.org/plugins/woocommerce-quickpay/
  * Description: Integrates your Quickpay payment gateway into your WooCommerce installation.
- * Version: 7.3.5
+ * Version: 7.4.0
  * Author: Perfect Solution
  * Text Domain: woo-quickpay
  * Domain Path: /languages/
@@ -19,7 +19,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'WCQP_VERSION', '7.3.5' );
+define( 'WCQP_VERSION', '7.4.0' );
 define( 'WCQP_URL', plugins_url( __FILE__ ) );
 define( 'WCQP_PATH', plugin_dir_path( __FILE__ ) );
 

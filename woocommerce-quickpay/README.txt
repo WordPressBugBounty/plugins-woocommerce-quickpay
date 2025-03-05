@@ -27,6 +27,9 @@ General:
 3. If WooCommerce Subscriptions is used, the required minimum version is >= 5.0
 
 == Changelog ==
+= 7.4.0 =
+* Fix: Subscription switching was not always creating a subscription payment when upgrading from a free subscription to a paid variant where no previous payments have been made.
+
 = 7.3.5 =
 * Fix: woocommerce_quickpay_get_order now makes a specific check on WC_Order instance to avoid possible direct property access on a WC_Order object.
 * Fix: add check in callback handler to avoid payment failed transitioning on orders and subscriptions that does not actually require a payment.

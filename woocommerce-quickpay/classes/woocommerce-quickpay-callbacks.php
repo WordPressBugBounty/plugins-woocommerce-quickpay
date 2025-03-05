@@ -122,23 +122,26 @@ class WC_QuickPay_Callbacks {
 
 		// Only make an instant payment if the order total is more than 0
 		if ( $related_order->get_total() > 0 ) {
-			// Check if this is an order containing a subscription or if it is a renewal order
-			if ( ! WC_QuickPay_Subscription::is_subscription( $related_order ) && ( WC_QuickPay_Order_Utils::contains_subscription( $related_order ) || WC_QuickPay_Subscription::is_renewal( $related_order ) ) ) {
-				// Process a recurring payment, but only if the subscription needs a payment.
-				// This check was introduced to avoid possible double payments in case Quickpay sends callbacks more than once.
-				if ( ( $wcs_subscription = wcs_get_subscription( $subscription->get_id() ) ) && $wcs_subscription->needs_payment() ) {
+			// Determine if the order is a subscription or renewal order
+			$is_subscription       = WC_QuickPay_Subscription::is_subscription( $related_order );
+			$contains_subscription = WC_QuickPay_Order_Utils::contains_subscription( $related_order );
+			$is_renewal            = WC_QuickPay_Subscription::is_renewal( $related_order );
+
+			if ( ! $is_subscription && ( $contains_subscription || $is_renewal ) ) {
+				// Retrieve the subscription and check if a payment is needed
+				$wcs_subscription = wcs_get_subscription( $subscription->get_id() );
+				// Checks if the subscription needs a payment. Also checks specifically on the related order as switch orders will not flag a subscription as needing a payment
+				$needs_payment = $wcs_subscription && ( $wcs_subscription->needs_payment() || $related_order->needs_payment() );
+
+				if ( $needs_payment ) {
 					WC_QP()->process_recurring_payment( new WC_QuickPay_API_Subscription(), $transaction->id, $related_order->get_total(), $related_order );
 				}
 			}
 		}
 		// If there is no initial payment, we will mark the order as complete.
 		// This is usually happening if a subscription has a free trial.
-		else {
-			// Only complete the order payment if we are not changing payment method.
-			// This is to avoid the subscription going into a 'processing' limbo.
-			if ( empty( $transaction->variables->change_payment ) ) {
-				$related_order->payment_complete();
-			}
+		else if ( empty( $transaction->variables->change_payment ) ) {
+			$related_order->payment_complete();
 		}
 
 		do_action( 'woocommerce_quickpay_callback_subscription_authorized', $subscription, $related_order, $transaction );

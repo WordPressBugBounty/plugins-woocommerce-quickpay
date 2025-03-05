@@ -130,13 +130,8 @@ class WC_QuickPay_Order_Transaction_Data_Utils {
 		$custom_vars['order_post_id'] = $order->get_id();
 
 		// Get the correct order_post_id. We want to fetch the ID of the subscription to store data on subscription (if available).
-		// But only on the first attempt. In case of failed auto capture on the initial order, we dont want to add the subscription ID.
-		// If we are handlong a product switch, we will not need this ID as we are making a regular payment.
-		if ( ! WC_QuickPay_Order_Utils::contains_switch_order( $order ) ) {
-			$subscription_id = WC_QuickPay_Subscription::get_subscription_id( $order );
-			if ( $subscription_id ) {
-				$custom_vars['subscription_post_id'] = $subscription_id;
-			}
+		if ( $subscription_id = WC_QuickPay_Subscription::get_subscription_id( $order ) ) {
+			$custom_vars['subscription_post_id'] = $subscription_id;
 		}
 
 		if ( WC_QuickPay_Requests_Utils::is_request_to_change_payment() ) {
