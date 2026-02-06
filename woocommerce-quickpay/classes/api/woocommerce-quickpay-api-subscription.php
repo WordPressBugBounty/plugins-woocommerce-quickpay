@@ -51,7 +51,7 @@ class WC_QuickPay_API_Subscription extends WC_QuickPay_API_Transaction {
 
 		$order_number = WC_QuickPay_Order_Payments_Utils::get_order_number_for_api( $order, true );
 
-		$request_url = sprintf( '%d/%s', $subscription_id, "recurring" );
+		$request_url = sprintf( '%1$d/%2$s', (int) $subscription_id, "recurring" );
 
 		$request_data = apply_filters( 'woocommerce_quickpay_create_recurring_payment_data', [
 			'amount'            => WC_QuickPay_Helper::price_multiply( $amount, $order->get_currency() ),
@@ -81,7 +81,7 @@ class WC_QuickPay_API_Subscription extends WC_QuickPay_API_Transaction {
 	 * @throws QuickPay_API_Exception
 	 */
 	public function cancel( int $subscription_id ): void {
-		$this->post( sprintf( '%d/%s', $subscription_id, "cancel" ) );
+		$this->post( sprintf( '%1$d/%2$s', $subscription_id, "cancel" ) );
 	}
 
 

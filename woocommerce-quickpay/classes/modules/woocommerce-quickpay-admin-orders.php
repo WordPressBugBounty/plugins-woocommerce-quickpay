@@ -34,7 +34,8 @@ class WC_QuickPay_Admin_Orders extends WC_QuickPay_Module {
 		// Determine if payment link creation should be skipped.
 		// By default, we will skip payment link creation if the order is paid already.
 		if ( ! apply_filters( 'woocommerce_quickpay_order_action_create_payment_link_for_order', ! $order->is_paid(), $order ) ) {
-			woocommerce_quickpay_add_admin_notice( sprintf( __( 'Payment link creation skipped for order #%s', 'woo-quickpay' ), $order->get_id() ), 'error' );
+			/* translators: 1: the order id */
+			woocommerce_quickpay_add_admin_notice( sprintf( esc_html__( 'Payment link creation skipped for order #%s', 'woocommerce-quickpay' ), $order->get_id() ), 'error' );
 
 			return;
 		}
@@ -50,7 +51,7 @@ class WC_QuickPay_Admin_Orders extends WC_QuickPay_Module {
 				$resource = new WC_QuickPay_API_Subscription();
 
 				if ( ! $order_parent_id = $resource_order->get_parent_id() ) {
-					throw new QuickPay_Exception( __( 'A parent order must be mapped to the subscription.', 'woo-quickpay' ) );
+					throw new QuickPay_Exception( esc_html__( 'A parent order must be mapped to the subscription.', 'woocommerce-quickpay' ) );
 				}
 				$resource_order = wc_get_order( $order_parent_id );
 
@@ -102,7 +103,8 @@ class WC_QuickPay_Admin_Orders extends WC_QuickPay_Module {
 
 			// Check URL
 			if ( ! WC_QuickPay_Helper::is_url( $link->url ) ) {
-				throw new Exception( sprintf( __( 'Invalid payment link received from API for order #%s', 'woo-quickpay' ), $order->get_id() ) );
+				/* translators: 1: the order id */
+				throw new Exception( sprintf( esc_html__( 'Invalid payment link received from API for order #%s', 'woocommerce-quickpay' ), $order->get_id() ) );
 			}
 
 
@@ -117,13 +119,15 @@ class WC_QuickPay_Admin_Orders extends WC_QuickPay_Module {
 
 			// Make sure to save the changes to the order/subscription object
 			$order->save();
-			$order->add_order_note( sprintf( __( 'Payment link manually created from backend: %s', 'woo-quickpay' ), $link->url ), false, true );
+			/* translators: 1: Payment link url */
+			$order->add_order_note( sprintf( esc_html__( 'Payment link manually created from backend: %s', 'woocommerce-quickpay' ), $link->url ), false, true );
 
 			do_action( 'woocommerce_quickpay_order_action_payment_link_created', $link->url, $order );
 
 			return true;
 		} catch ( Exception $e ) {
-			woocommerce_quickpay_add_admin_notice( sprintf( __( 'Payment link could not be created for order #%s. Error: %s', 'woo-quickpay' ), $order->get_id(), $e->getMessage() ), 'error' );
+			/* translators: 1: order id, 2: error message */
+			woocommerce_quickpay_add_admin_notice( sprintf( esc_html__( 'Payment link could not be created for order #%1$s. Error: %2$s', 'woocommerce-quickpay' ), $order->get_id(), $e->getMessage() ), 'error' );
 
 			return false;
 		}
@@ -152,7 +156,7 @@ class WC_QuickPay_Admin_Orders extends WC_QuickPay_Module {
 	 * @return mixed
 	 */
 	public function admin_order_actions( $actions ) {
-		$actions['quickpay_create_payment_link'] = __( 'Create payment link', 'woo-quickpay' );
+		$actions['quickpay_create_payment_link'] = esc_html__( 'Create payment link', 'woocommerce-quickpay' );
 
 		return $actions;
 	}

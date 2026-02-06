@@ -26,7 +26,7 @@ class WC_QuickPay_Orders extends WC_QuickPay_Module {
 					$transaction->get( $transaction_id );
 					if ( $transaction->is_action_allowed( 'cancel' ) ) {
 						$transaction->cancel( $transaction_id );
-						$order->add_order_note( __( 'QuickPay: Payment cancelled due to order cancellation', 'woo-quickpay' ) );
+						$order->add_order_note( esc_html__( 'QuickPay: Payment cancelled due to order cancellation', 'woocommerce-quickpay' ) );
 					}
 				} catch ( Exception $e ) {
 					WC_QP()->log->add( 'Event: Order cancelled -> Error occured when cancelling transaction: ' . $e->getMessage() );
@@ -54,7 +54,7 @@ class WC_QuickPay_Orders extends WC_QuickPay_Module {
 		$autocomplete_renewal_orders = WC_QuickPay_Helper::option_is_enabled( WC_QP()->s( 'subscription_autocomplete_renewal_orders' ) );
 
 		if ( ! $is_mp_subscription && $autocomplete_renewal_orders && WC_QuickPay_Subscription::is_renewal( $order ) ) {
-			$order->update_status( 'completed', __( 'Automatically completing order status due to successful recurring payment', 'woo-quickpay' ) );
+			$order->update_status( 'completed', esc_html__( 'Automatically completing order status due to successful recurring payment', 'woocommerce-quickpay' ) );
 		}
 	}
 }

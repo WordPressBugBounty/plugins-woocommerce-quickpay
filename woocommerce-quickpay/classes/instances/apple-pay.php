@@ -33,27 +33,30 @@ class WC_QuickPay_Apple_Pay extends WC_QuickPay_Instance {
 	public function init_form_fields(): void {
 		$this->form_fields = [
 			'enabled'     => [
-				'title'   => __( 'Enable', 'woo-quickpay' ),
+				'title'   => esc_html__( 'Enable', 'woocommerce-quickpay' ),
 				'type'    => 'checkbox',
-				'label'   => sprintf( __( 'Enable %s payment', 'woo-quickpay' ), 'Apple Pay' ),
+				/* translators: 1: name of the payment gateway  */
+				'label'   => sprintf( esc_html__( 'Enable %s payment', 'woocommerce-quickpay' ), 'Apple Pay' ),
 				'default' => 'no',
-				'description' => sprintf(__( 'Works only in %s.', 'woo-quickpay' ), 'Safari' )
+				/* translators: 1: name of the browser */
+				'description' => sprintf(esc_html__( 'Works only in %s.', 'woocommerce-quickpay' ), 'Safari' )
 			],
 			'_Shop_setup' => [
 				'type'  => 'title',
-				'title' => __( 'Shop setup', 'woo-quickpay' ),
+				'title' => esc_html__( 'Shop setup', 'woocommerce-quickpay' ),
 			],
 			'title'       => [
-				'title'       => __( 'Title', 'woo-quickpay' ),
+				'title'       => esc_html__( 'Title', 'woocommerce-quickpay' ),
 				'type'        => 'text',
-				'description' => __( 'This controls the title which the user sees during checkout.', 'woo-quickpay' ),
-				'default'     => __( 'Apple Pay', 'woo-quickpay' )
+				'description' => esc_html__( 'This controls the title which the user sees during checkout.', 'woocommerce-quickpay' ),
+				'default'     => esc_html__( 'Apple Pay', 'woocommerce-quickpay' )
 			],
 			'description' => [
-				'title'       => __( 'Customer Message', 'woo-quickpay' ),
+				'title'       => esc_html__( 'Customer Message', 'woocommerce-quickpay' ),
 				'type'        => 'textarea',
-				'description' => __( 'This controls the description which the user sees during checkout.', 'woo-quickpay' ),
-				'default'     => sprintf( __( 'Pay with %s', 'woo-quickpay' ), 'Apple Pay' )
+				'description' => esc_html__( 'This controls the description which the user sees during checkout.', 'woocommerce-quickpay' ),
+				/* translators: 1: name of the payment gateway */
+				'default'     => sprintf( esc_html__( 'Pay with %s', 'woocommerce-quickpay' ), 'Apple Pay' )
 			],
 		];
 	}

@@ -63,7 +63,7 @@ class WC_QuickPay_Order_Payments_Utils {
 		if ( $fee_in_cents > 0 ) {
 			$fee = new WC_Order_Item_Fee();
 
-			$fee->set_name( __( 'Payment Fee', 'woo-quickpay' ) );
+			$fee->set_name( __( 'Payment Fee', 'woocommerce-quickpay' ) );
 			$fee->set_total( $fee_in_cents / 100 );
 			$fee->set_tax_status( 'none' );
 			$fee->set_total_tax( 0 );

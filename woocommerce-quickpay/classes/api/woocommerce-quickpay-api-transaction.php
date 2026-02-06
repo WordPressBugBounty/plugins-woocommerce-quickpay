@@ -81,7 +81,7 @@ class WC_QuickPay_API_Transaction extends WC_QuickPay_API {
 		}
 
 		if ( wc_string_to_bool( $last_operation->pending ) ) {
-			$last_operation->type = __( 'Pending - check your QuickPay manager', 'woo-quickpay' );
+			$last_operation->type = esc_html__( 'Pending - check your QuickPay manager', 'woocommerce-quickpay' );
 		}
 
 		return $last_operation;
@@ -183,6 +183,7 @@ class WC_QuickPay_API_Transaction extends WC_QuickPay_API {
 			'branding_id'                  => WC_QP()->s( 'quickpay_branding_id' ),
 			'google_analytics_tracking_id' => WC_QP()->s( 'quickpay_google_analytics_tracking_id' ),
 			'customer_email'               => $order->get_billing_email(),
+			'referer_url'                  => wp_parse_url( home_url(), PHP_URL_HOST ),
 		];
 
 		$order_params = WC_QuickPay_Order_Payments_Utils::prepare_transaction_link_params( $order );
@@ -394,7 +395,7 @@ class WC_QuickPay_API_Transaction extends WC_QuickPay_API {
 		$is_caching_enabled = self::is_transaction_caching_enabled();
 
 		if ( empty( $transaction_id ) ) {
-			throw new QuickPay_Exception( __( 'Transaction ID cannot be empty', 'woo-quickpay' ) );
+			throw new QuickPay_Exception( esc_html__( 'Transaction ID cannot be empty', 'woocommerce-quickpay' ) );
 		}
 
 		if ( $is_caching_enabled && false !== ( $transient = get_transient( 'wcqp_transaction_' . $transaction_id ) ) ) {

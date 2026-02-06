@@ -141,16 +141,16 @@ class WC_QuickPay_Install {
 	 * Asynchronous data upgrader acction
 	 */
 	public static function ajax_run_upgrader() {
-		$nonce = isset( $_POST['nonce'] ) ? $_POST['nonce'] : null;
+		$nonce = isset( $_POST['nonce'] ) ? sanitize_text_field(wp_unslash($_POST['nonce'])) : null;
 
-		if ( ! wp_verify_nonce( $nonce, 'woocommerce-quickpay-run-upgrader-nonce' ) && ! current_user_can( 'administrator' ) ) {
-			echo json_encode( [ 'status' => 'error', 'message' => __( 'You are not authorized to perform this action', 'woo-quickpay' ) ] );
+		if ( empty( $nonce ) || ! wp_verify_nonce(  $nonce , 'woocommerce-quickpay-run-upgrader-nonce' ) || ! current_user_can( 'administrator' ) ) {
+			echo wp_json_encode( [ 'status' => 'error', 'message' => __( 'You are not authorized to perform this action', 'woocommerce-quickpay' ) ] );
 			exit;
 		}
 
 		self::update();
 
-		echo json_encode( [ 'status' => 'success' ] );
+		echo wp_json_encode( [ 'status' => 'success' ] );
 
 		exit;
 	}

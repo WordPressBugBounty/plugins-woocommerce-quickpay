@@ -67,12 +67,11 @@ class QuickPay_Exception extends Exception {
 	 * @return void
 	 */
 	public function write_standard_warning(): void {
-		printf(
-			wp_kses(
-				__( "An error occurred. For more information check out the <strong>%s</strong> logs inside <strong>WooCommerce -> System Status -> Logs</strong>.", 'woo-quickpay' ), [ 'strong' => [] ]
-			),
+		echo wp_kses_post(sprintf(
+			/* translators: 1: The text domain */
+			__( "An error occurred. For more information check out the <strong>%s</strong> logs inside <strong>WooCommerce -> System Status -> Logs</strong>.", 'woocommerce-quickpay' ),
 			$this->log->get_domain()
-		);
+		));
 	}
 }
 

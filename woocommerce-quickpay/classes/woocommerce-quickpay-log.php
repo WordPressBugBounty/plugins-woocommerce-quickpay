@@ -60,7 +60,7 @@ class WC_QuickPay_Log {
 		}
 
 		if ( is_array( $param ) ) {
-			$message .= print_r( $param, true );
+			$message .= wp_json_encode( $param, JSON_PRETTY_PRINT );
 		}
 
 		$this->_logger->add( $this->_domain, $message );
@@ -109,11 +109,11 @@ class WC_QuickPay_Log {
 	 * Returns a link to the log files in the WP backend.
 	 */
 	public function get_admin_link() {
-		if ( defined('WC_VERSION')) {
-			if (version_compare(WC_VERSION, '8.6', '>=')) {
+		if ( defined( 'WC_VERSION' ) ) {
+			if ( version_compare( WC_VERSION, '8.6', '>=' ) ) {
 				$args = [
-					'page'     => 'wc-status',
-					'tab'      => 'logs',
+					'page'   => 'wc-status',
+					'tab'    => 'logs',
 					'source' => $this->_domain
 				];
 

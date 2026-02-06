@@ -38,42 +38,42 @@ class WC_QuickPay_Extra extends WC_QuickPay_Instance {
 	public function init_form_fields(): void {
 		$this->form_fields = [
 			'enabled'        => [
-				'title'   => __( 'Enable', 'woo-quickpay' ),
+				'title'   => esc_html__( 'Enable', 'woocommerce-quickpay' ),
 				'type'    => 'checkbox',
-				'label'   => __( 'Enable Extra QuickPay gateway', 'woo-quickpay' ),
+				'label'   => esc_html__( 'Enable Extra QuickPay gateway', 'woocommerce-quickpay' ),
 				'default' => 'no'
 			],
 			'_Shop_setup'    => [
 				'type'  => 'title',
-				'title' => __( 'Shop setup', 'woo-quickpay' ),
+				'title' => esc_html__( 'Shop setup', 'woocommerce-quickpay' ),
 			],
 			'title'          => [
-				'title'       => __( 'Title', 'woo-quickpay' ),
+				'title'       => esc_html__( 'Title', 'woocommerce-quickpay' ),
 				'type'        => 'text',
-				'description' => __( 'This controls the title which the user sees during checkout.', 'woo-quickpay' ),
-				'default'     => __( 'QuickPay', 'woo-quickpay' )
+				'description' => esc_html__( 'This controls the title which the user sees during checkout.', 'woocommerce-quickpay' ),
+				'default'     => esc_html__( 'QuickPay', 'woocommerce-quickpay' )
 			],
 			'description'    => [
-				'title'       => __( 'Customer Message', 'woo-quickpay' ),
+				'title'       => esc_html__( 'Customer Message', 'woocommerce-quickpay' ),
 				'type'        => 'textarea',
-				'description' => __( 'This controls the description which the user sees during checkout.', 'woo-quickpay' ),
-				'default'     => __( 'Pay', 'woo-quickpay' )
+				'description' => esc_html__( 'This controls the description which the user sees during checkout.', 'woocommerce-quickpay' ),
+				'default'     => esc_html__( 'Pay', 'woocommerce-quickpay' )
 			],
 			'cardtypelock'   => [
-				'title'       => __( 'Payment methods', 'woo-quickpay' ),
+				'title'       => esc_html__( 'Payment methods', 'woocommerce-quickpay' ),
 				'type'        => 'text',
-				'description' => __( 'Default: creditcard. Type in the cards you wish to accept (comma separated). See the valid payment types here: <b>https://learn.quickpay.net/tech-talk/appendixes/payment-methods/#payment-methods</b>', 'woo-quickpay' ),
+				'description' => esc_html__( 'Default: creditcard. Type in the cards you wish to accept (comma separated). See the valid payment types here: <b>https://learn.quickpay.net/tech-talk/appendixes/payment-methods/#payment-methods</b>', 'woocommerce-quickpay' ),
 				'default'     => 'creditcard',
 			],
 			'quickpay_icons' => [
-				'title'             => __( 'Credit card icons', 'woo-quickpay' ),
+				'title'             => esc_html__( 'Credit card icons', 'woocommerce-quickpay' ),
 				'type'              => 'multiselect',
-				'description'       => __( 'Choose the card icons you wish to show next to the QuickPay payment option in your shop.', 'woo-quickpay' ),
+				'description'       => esc_html__( 'Choose the card icons you wish to show next to the QuickPay payment option in your shop.', 'woocommerce-quickpay' ),
 				'desc_tip'          => true,
 				'class'             => 'wc-enhanced-select',
 				'css'               => 'width: 450px;',
 				'custom_attributes' => [
-					'data-placeholder' => __( 'Select icons', 'woo-quickpay' )
+					'data-placeholder' => esc_html__( 'Select icons', 'woocommerce-quickpay' )
 				],
 				'default'           => '',
 				'options'           => WC_QuickPay_Settings::get_card_icons(),

@@ -234,7 +234,7 @@ class WC_QuickPay_API {
 			} else if ( isset( $this->resource_data->message ) ) {
 				throw new QuickPay_API_Exception( $this->resource_data->message, $response_code, null, $curl_request_url, $request_form_data, $response_data );
 			} else {
-				throw new QuickPay_API_Exception( (string) json_encode( $this->resource_data ), $response_code, null, $curl_request_url, $request_form_data, $response_data );
+				throw new QuickPay_API_Exception( (string) wp_json_encode( $this->resource_data ), $response_code, null, $curl_request_url, $request_form_data, $response_data );
 			}
 
 		}

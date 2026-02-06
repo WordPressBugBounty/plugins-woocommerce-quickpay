@@ -24,12 +24,12 @@ if ( ! defined( 'ABSPATH' ) ) {
 do_action( 'woocommerce_email_header', $email_heading, $email ); ?>
 
 <?php /* translators: %s: Customer first name */ ?>
-	<p><?php printf( esc_html__( 'Hi %s,', 'woocommerce' ), esc_html( $order->get_billing_first_name() ) ); ?></p>
+	<p><?php printf( esc_html__( 'Hi %s,', 'woocommerce-quickpay' ), esc_html( $order->get_billing_first_name() ) ); ?></p>
 
-	<p><?php echo esc_html__( 'Thank you for your order.', 'woo-quickpay' ) . "\n\n"; ?></p>
+	<p><?php echo esc_html__( 'Thank you for your order.', 'woocommerce-quickpay' ) . "\n\n"; ?></p>
 
 <?php /* translators: %s: Site title */ ?>
-	<p><?php printf( esc_html__( 'Use the following link to pay and complete your order: %s', 'woo-quickpay' ), make_clickable( $payment_link ) ); ?></p>
+	<p><?php printf( esc_html__( 'Use the following link to pay and complete your order: %s', 'woocommerce-quickpay' ), make_clickable( $payment_link ) ); ?></p>
 <?php
 
 /*
@@ -53,7 +53,7 @@ do_action( 'woocommerce_email_customer_details', $order, $sent_to_admin, $plain_
 
 ?>
 	<p>
-		<?php esc_html_e( 'Thanks for shopping with us.', 'woocommerce' ); ?>
+		<?php esc_html_e( 'Thanks for shopping with us.', 'woocommerce-quickpay' ); ?>
 	</p>
 <?php
 

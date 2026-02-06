@@ -64,7 +64,7 @@ class WC_QuickPay_MobilePay_Subscriptions extends WC_QuickPay_Instance {
 
 			// Check if the subscription has the allowed status
 			if ( $subscription->has_status( $allowed_transition_from ) ) {
-				$note = ! empty( $operation->aq_status_msg ) ? $operation->aq_status_msg : __( 'Subscription transaction has been cancelled by merchant or customer', 'woo-quickpay' );
+				$note = ! empty( $operation->aq_status_msg ) ? $operation->aq_status_msg : esc_html__( 'Subscription transaction has been cancelled by merchant or customer', 'woocommerce-quickpay' );
 				// If the setting has been set to cancelled, we will run the cancel_order method on the subscription to
 				// take advantage of the built-in pending-cancel/cancelled functionality.
 				if ( $transition_to === 'cancelled' ) {
@@ -148,70 +148,72 @@ class WC_QuickPay_MobilePay_Subscriptions extends WC_QuickPay_Instance {
 	public function init_form_fields(): void {
 		$this->form_fields = [
 			'enabled'                             => [
-				'title'   => __( 'Enable', 'woo-quickpay' ),
+				'title'   => esc_html__( 'Enable', 'woocommerce-quickpay' ),
 				'type'    => 'checkbox',
-				'label'   => sprintf( __( 'Enable %s payment', 'woo-quickpay' ), $this->get_sanitized_method_title() ),
+				/* translators: 1: name of the payment gateway */
+				'label'   => sprintf( esc_html__( 'Enable %s payment', 'woocommerce-quickpay' ), $this->get_sanitized_method_title() ),
 				'default' => 'no'
 			],
 			'_Shop_setup'                         => [
 				'type'  => 'title',
-				'title' => __( 'Shop setup', 'woo-quickpay' ),
+				'title' => esc_html__( 'Shop setup', 'woocommerce-quickpay' ),
 			],
 			'title'                               => [
-				'title'       => __( 'Title', 'woo-quickpay' ),
+				'title'       => esc_html__( 'Title', 'woocommerce-quickpay' ),
 				'type'        => 'text',
-				'description' => __( 'This controls the title which the user sees during checkout.', 'woo-quickpay' ),
+				'description' => esc_html__( 'This controls the title which the user sees during checkout.', 'woocommerce-quickpay' ),
 				'default'     => $this->get_sanitized_method_title(),
 			],
 			'description'                         => [
-				'title'       => __( 'Customer Message', 'woo-quickpay' ),
+				'title'       => esc_html__( 'Customer Message', 'woocommerce-quickpay' ),
 				'type'        => 'textarea',
-				'description' => __( 'This controls the description which the user sees during checkout.', 'woo-quickpay' ),
-				'default'     => sprintf( __( 'Pay with %s', 'woo-quickpay' ), $this->get_sanitized_method_title() ),
+				'description' => esc_html__( 'This controls the description which the user sees during checkout.', 'woocommerce-quickpay' ),
+				/* translators: 1: name of the payment gateway */
+				'default'     => sprintf( esc_html__( 'Pay with %s', 'woocommerce-quickpay' ), $this->get_sanitized_method_title() ),
 			],
 			[
 				'type'  => 'title',
 				'title' => 'Checkout'
 			],
 			'checkout_instant_activation'         => [
-				'title'       => __( 'Activate subscriptions immediately.', 'woo-quickpay' ),
+				'title'       => esc_html__( 'Activate subscriptions immediately.', 'woocommerce-quickpay' ),
 				'type'        => 'checkbox',
-				'label'       => __( 'Enable', 'woo-quickpay' ),
+				'label'       => esc_html__( 'Enable', 'woocommerce-quickpay' ),
 				'default'     => 'no',
-				'description' => __( 'Activates the subscription after the customer authorizes an agreement. <strong>Not suitable for membership pages selling virtual products</strong> as the first payment might take up to 48 hours to either succeed or fail. Read more <a href="https://learn.quickpay.net/helpdesk/da/articles/payment-methods/mobilepay-subscriptions/#oprettelse-af-abonnement" target="_blank">here</a>', 'woo-quickpay' ),
+				'description' => esc_html__( 'Activates the subscription after the customer authorizes an agreement. <strong>Not suitable for membership pages selling virtual products</strong> as the first payment might take up to 48 hours to either succeed or fail. Read more <a href="https://learn.quickpay.net/helpdesk/da/articles/payment-methods/mobilepay-subscriptions/#oprettelse-af-abonnement" target="_blank">here</a>', 'woocommerce-quickpay' ),
 			],
 			'checkout_prefill_phone_number'       => [
-				'title'       => __( 'Pre-fill phone number', 'woo-quickpay' ),
+				'title'       => esc_html__( 'Pre-fill phone number', 'woocommerce-quickpay' ),
 				'type'        => 'checkbox',
-				'label'       => __( 'Enable', 'woo-quickpay' ),
+				'label'       => esc_html__( 'Enable', 'woocommerce-quickpay' ),
 				'default'     => 'yes',
-				'description' => __( 'When enabled the customer\'s phone number will be used on the MobilePay payment page.', 'woo-quickpay' ),
+				'description' => esc_html__( 'When enabled the customer\'s phone number will be used on the MobilePay payment page.', 'woocommerce-quickpay' ),
 			],
 			[
 				'type'  => 'title',
 				'title' => 'Renewals'
 			],
 			'renewal_keep_active'                 => [
-				'title'       => __( 'Keep subscription active', 'woo-quickpay' ),
+				'title'       => esc_html__( 'Keep subscription active', 'woocommerce-quickpay' ),
 				'type'        => 'checkbox',
-				'label'       => __( 'Enable', 'woo-quickpay' ),
+				'label'       => esc_html__( 'Enable', 'woocommerce-quickpay' ),
 				'default'     => 'no',
-				'description' => __( 'When enabled the subscription will automatically be activated after scheduling the renewal payment. If the payment fails the subscription will be put on-hold.', 'woo-quickpay' ),
+				'description' => esc_html__( 'When enabled the subscription will automatically be activated after scheduling the renewal payment. If the payment fails the subscription will be put on-hold.', 'woocommerce-quickpay' ),
 			],
 			[
 				'type'  => 'title',
-				'title' => __( 'Agreements', 'woo-quickpay' )
+				'title' => esc_html__( 'Agreements', 'woocommerce-quickpay' )
 			],
 			'mps_transaction_cancellation_status' => [
-				'title'             => __( 'Cancelled agreements status', 'woo-quickpay' ),
+				'title'             => esc_html__( 'Cancelled agreements status', 'woocommerce-quickpay' ),
 				'type'              => 'select',
 				'class'             => 'wc-enhanced-select',
 				'css'               => 'width: 450px;',
 				'default'           => 'none',
-				'description'       => __( 'Changes subscription status in case of cancelled payment agreement from either the QuickPay manager or the customer\'s MobilePay app', 'woo-quickpay' ),
+				'description'       => esc_html__( 'Changes subscription status in case of cancelled payment agreement from either the QuickPay manager or the customer\'s MobilePay app', 'woocommerce-quickpay' ),
 				'options'           => $this->get_mps_cancel_agreement_status_options(),
 				'custom_attributes' => [
-					'data-placeholder' => __( 'Select status', 'woo-quickpay' )
+					'data-placeholder' => esc_html__( 'Select status', 'woocommerce-quickpay' )
 				]
 			],
 		];
@@ -219,7 +221,7 @@ class WC_QuickPay_MobilePay_Subscriptions extends WC_QuickPay_Instance {
 
 	private function get_mps_cancel_agreement_status_options() {
 		return apply_filters( 'woocommerce_quickpay_mps_cancel_agreement_status_options', [
-			'none'      => __( 'Do nothing', 'woo-quickpay' ),
+			'none'      => esc_html__( 'Do nothing', 'woocommerce-quickpay' ),
 			'on-hold'   => wc_get_order_status_name( 'on-hold' ),
 			'cancelled' => wc_get_order_status_name( 'cancelled' ),
 		], $this );
@@ -286,7 +288,8 @@ class WC_QuickPay_MobilePay_Subscriptions extends WC_QuickPay_Instance {
 	public function recurring_payment_data( $data, WC_Order $order, $subscription_id ): array {
 		if ( empty( $data['due_date'] ) ) {
 			$data['auto_capture_at'] = wp_date( 'Y-m-d', strtotime( 'now + 2 days' ), apply_filters( 'woocommerce_quickpay_mps_timezone', null, $data, $order, $subscription_id ) );
-			$data['description']     = sprintf( __( 'Payment of #%s', 'woo-quickpay' ), $order->get_order_number() );
+			/* translators: 1: the order number */
+			$data['description']     = sprintf( esc_html__( 'Payment of #%s', 'woocommerce-quickpay' ), $order->get_order_number() );
 		}
 
 		return $data;
@@ -305,7 +308,7 @@ class WC_QuickPay_MobilePay_Subscriptions extends WC_QuickPay_Instance {
 				$instant_activation = WC_QuickPay_Helper::option_is_enabled( $this->s( 'checkout_instant_activation' ) );
 
 				if ( $instant_activation && ! $subscription->has_status( 'active' ) ) {
-					$subscription->update_status( 'active', __( "'Activate subscriptions immediately.' enabled. Activating subscription due to authorized MobilePay agreement", 'woo-quickpay' ) );
+					$subscription->update_status( 'active', esc_html__( "'Activate subscriptions immediately.' enabled. Activating subscription due to authorized MobilePay agreement", 'woocommerce-quickpay' ) );
 					$subscription->save();
 				}
 			}
@@ -354,7 +357,7 @@ class WC_QuickPay_MobilePay_Subscriptions extends WC_QuickPay_Instance {
 			'post_meta' => [
 				'_quickpay_transaction_id' => [
 					'value' => WC_QuickPay_Order_Utils::get_transaction_id( $subscription ),
-					'label' => __( 'QuickPay Transaction ID', 'woo-quickpay' ),
+					'label' => esc_html__( 'QuickPay Transaction ID', 'woocommerce-quickpay' ),
 				],
 			],
 		];

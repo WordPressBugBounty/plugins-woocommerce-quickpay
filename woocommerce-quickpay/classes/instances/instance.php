@@ -54,15 +54,23 @@ class WC_QuickPay_Instance extends WC_QuickPay {
 			'section' => 'wc_quickpay'
 		];
 
+		$allowed_html = [
+			'a' => [
+				'href' => [],
+			],
+		];
+
 		$html = sprintf( "<p><small>Version: %s</small>", WCQP_VERSION );
-		$html .= "<p>" . sprintf( __( 'Allows you to receive payments via %s', 'woo-quickpay' ), $this->method_title ) . "</p>";
-		$html .= "<p>" . sprintf( __( 'This module has it\'s main configuration inside the \'QuickPay\' tab.', 'woo-quickpay' ), 's' ) . "</p>";
-		$html .= "<p>" . sprintf( __( 'Click <a href="%s">here</a> to access the main configuration.', 'woo-quickpay' ), add_query_arg( $main_settings_args, admin_url( 'admin.php' ) ) ) . "</p>";
+		/* translators: 1: Payment method title */
+		$html .= "<p>" . sprintf( esc_html__( 'Allows you to receive payments via %s', 'woocommerce-quickpay' ), $this->method_title ) . "</p>";
+		$html .= "<p>" . sprintf( esc_html__( 'This module has it\'s main configuration inside the \'QuickPay\' tab.', 'woocommerce-quickpay' ), 's' ) . "</p>";
+		/* translators: 1:  Link to the main settings page */
+		$html .= "<p>" . wp_kses( sprintf( __( 'Click <a href="%s">here</a> to access the main configuration.', 'woocommerce-quickpay' ), esc_url( add_query_arg( $main_settings_args, admin_url( 'admin.php' ) ) ) ), $allowed_html ) . "</p>";
 
 		$html .= get_parent_class( get_parent_class( get_parent_class( $this ) ) )::generate_settings_html( $form_fields, $echo );
 
 		if ( $echo ) {
-			echo $html; // WPCS: XSS ok.
+			echo wp_kses_post($html); // WPCS: XSS ok.
 		} else {
 			return $html;
 		}

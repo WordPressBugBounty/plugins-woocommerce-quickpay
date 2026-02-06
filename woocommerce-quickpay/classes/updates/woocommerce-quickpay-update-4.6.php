@@ -50,9 +50,9 @@ if ( ! empty( $subscriptions ) ) {
 					$order->save_meta_data();
 				}
 
-				$logger->add( sprintf( 'Migrated transaction (%d) from parent order ID: %s to subscription order ID: %s', $transaction_id, $subscription_id, $order_id ) );
+				$logger->add( sprintf( 'Migrated transaction (%1$d) from parent order ID: %2$s to subscription order ID: %3$s', $transaction_id, $subscription_id, $order_id ) );
 			} catch ( WC_Data_Exception|QuickPay_API_Exception $e ) {
-				$logger->add( sprintf( 'Failed migration of transaction (%d) from parent order ID: %s to subscription order ID: %s. Error: %s', $transaction_id, $subscription_id, $order_id, $e->getMessage() ) );
+				$logger->add( sprintf( 'Failed migration of transaction (%1$d) from parent order ID: %2$s to subscription order ID: %3$s. Error: %4$s', $transaction_id, $subscription_id, $order_id, $e->getMessage() ) );
 			}
 		}
 	}

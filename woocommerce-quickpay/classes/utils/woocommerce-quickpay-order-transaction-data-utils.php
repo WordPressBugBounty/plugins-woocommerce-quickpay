@@ -108,22 +108,22 @@ class WC_QuickPay_Order_Transaction_Data_Utils {
 
 		// Single: Order Email
 		if ( in_array( 'customer_email', $custom_vars_settings, true ) ) {
-			$custom_vars[ __( 'Customer Email', 'woo-quickpay' ) ] = $order->get_billing_email();
+			$custom_vars[ esc_html__( 'Customer Email', 'woocommerce-quickpay' ) ] = $order->get_billing_email();
 		}
 
 		// Single: Order Phone
 		if ( in_array( 'customer_phone', $custom_vars_settings, true ) ) {
-			$custom_vars[ __( 'Customer Phone', 'woo-quickpay' ) ] = $order->get_billing_phone();
+			$custom_vars[ esc_html__( 'Customer Phone', 'woocommerce-quickpay' ) ] = $order->get_billing_phone();
 		}
 
 		// Single: Browser User Agent
 		if ( in_array( 'browser_useragent', $custom_vars_settings, true ) ) {
-			$custom_vars[ __( 'User Agent', 'woo-quickpay' ) ] = $order->get_customer_user_agent();
+			$custom_vars[ esc_html__( 'User Agent', 'woocommerce-quickpay' ) ] = $order->get_customer_user_agent();
 		}
 
 		// Single: Shipping Method
 		if ( in_array( 'shipping_method', $custom_vars_settings, true ) ) {
-			$custom_vars[ __( 'Shipping Method', 'woo-quickpay' ) ] = $order->get_shipping_method();
+			$custom_vars[ esc_html__( 'Shipping Method', 'woocommerce-quickpay' ) ] = $order->get_shipping_method();
 		}
 
 		// Save a POST ID reference on the transaction

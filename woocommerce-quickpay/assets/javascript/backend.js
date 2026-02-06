@@ -66,7 +66,7 @@
             type: 'POST',
             url: quickpayBackend.ajax_url + 'admin/manage-payment',
             dataType: 'json',
-            data: $.extend({}, {post: this.postID}, dataObject),
+            data: $.extend({}, {post: this.postID, '_wpnonce': quickpayBackend.nonce}, dataObject),
             beforeSend: $.proxy(this.showLoader, this, true),
             success: function () {
                 $.get(window.location.href, function (data) {
@@ -103,7 +103,7 @@
     };
 
     QuickPayCheckAPIStatus.prototype.pingAPI = function () {
-        $.post(quickpayBackend.ajax_url + 'admin/settings/ping', {api_key: this.apiSettingsField.val()}, $.proxy(function (response) {
+        $.post(quickpayBackend.ajax_url + 'admin/settings/ping', {api_key: this.apiSettingsField.val(), '_wpnonce': quickpayBackend.nonce}, $.proxy(function (response) {
             if (response.success === true) {
                 this.indicator.addClass('ok').removeClass('error');
             } else {
@@ -141,7 +141,7 @@
         emptyLogsButton.on('click', function (e) {
             e.preventDefault();
             emptyLogsButton.prop('disabled', true);
-            $.getJSON(quickpayBackend.ajax_url + 'admin/settings/empty-logs', function (response) {
+            $.getJSON(quickpayBackend.ajax_url + 'admin/settings/empty-logs', {'_wpnonce': quickpayBackend.nonce}, function (response) {
                 wcqpInsertAjaxResponseMessage(response);
                 emptyLogsButton.prop('disabled', false);
             });
@@ -151,7 +151,7 @@
         flushCacheButton.on('click', function (e) {
             e.preventDefault();
             flushCacheButton.prop('disabled', true);
-            $.getJSON(quickpayBackend.ajax_url + 'admin/settings/clear-cache', function (response) {
+            $.getJSON(quickpayBackend.ajax_url + 'admin/settings/clear-cache', {'_wpnonce': quickpayBackend.nonce}, function (response) {
                 wcqpInsertAjaxResponseMessage(response);
                 flushCacheButton.prop('disabled', false);
             });
@@ -182,7 +182,7 @@
         this.refresh.on('click', function () {
             if (!self.refresh.hasClass('ok')) {
                 self.refresh.addClass('is-loading');
-                $.post(quickpayBackend.ajax_url + 'admin/settings/private-key', {api_key: self.apiKeyField.val()}, function (response) {
+                $.post(quickpayBackend.ajax_url + 'admin/settings/private-key', {api_key: self.apiKeyField.val(), '_wpnonce': quickpayBackend.nonce}, function (response) {
                     if (response.success === true) {
                         self.field.val(response.data.private_key);
                         self.refresh.removeClass('refresh').addClass('ok');

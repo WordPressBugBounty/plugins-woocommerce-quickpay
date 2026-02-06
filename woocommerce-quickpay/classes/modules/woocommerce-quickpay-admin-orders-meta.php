@@ -27,8 +27,8 @@ class WC_QuickPay_Admin_Orders_Meta extends WC_QuickPay_Module {
 
 		if ( WC_QuickPay_Requests_Utils::is_current_admin_screen( $screen_orders, $screen_subs ) ) {
 			if ( ( $order = woocommerce_quickpay_get_order( $post_or_order ) ) && WC_QuickPay_Order_Payments_Utils::is_order_using_quickpay( $order ) ) {
-				add_meta_box( 'quickpay-payment-actions', __( 'QuickPay Payment', 'woo-quickpay' ), [ $this, 'meta_box_payment', ], $screen_orders, 'side', 'high' );
-				add_meta_box( 'quickpay-payment-actions', __( 'QuickPay Subscription', 'woo-quickpay' ), [ $this, 'meta_box_subscription', ], $screen_subs, 'side', 'high' );
+				add_meta_box( 'quickpay-payment-actions', esc_html__( 'QuickPay Payment', 'woocommerce-quickpay' ), [ $this, 'meta_box_payment', ], $screen_orders, 'side', 'high' );
+				add_meta_box( 'quickpay-payment-actions', esc_html__( 'QuickPay Subscription', 'woocommerce-quickpay' ), [ $this, 'meta_box_subscription', ], $screen_subs, 'side', 'high' );
 			}
 		}
 	}
@@ -124,7 +124,7 @@ class WC_QuickPay_Admin_Orders_Meta extends WC_QuickPay_Module {
 				$transaction->get( $transaction_id );
 				$state = $transaction->get_state();
 				try {
-					$status = $transaction->get_current_type() . ' (' . __( 'subscription', 'woo-quickpay' ) . ')';
+					$status = $transaction->get_current_type() . ' (' . esc_html__( 'subscription', 'woocommerce-quickpay' ) . ')';
 				} catch ( QuickPay_API_Exception $e ) {
 					if ( 'initial' !== $state ) {
 						throw new QuickPay_API_Exception( $e->getMessage() );

@@ -123,7 +123,8 @@ class WC_QuickPay_Helper {
 		if ( self::maybe_enqueue_admin_statics() ) {
 			wp_enqueue_script( 'quickpay-backend', plugins_url( '/assets/javascript/backend.js', __DIR__ ), [ 'jquery' ], self::static_version() );
 			wp_localize_script( 'quickpay-backend', 'quickpayBackend', [
-				'ajax_url' => WC_QuickPay_Admin_Ajax::get_instance()->get_base_url()
+				'ajax_url' => WC_QuickPay_Admin_Ajax::get_instance()->get_base_url(),
+				'nonce'    => wp_create_nonce( 'manage-woocommerce-quickpay' ),
 			] );
 		}
 
@@ -135,12 +136,11 @@ class WC_QuickPay_Helper {
 	 * @return bool
 	 */
 	protected static function maybe_enqueue_admin_statics(): bool {
-		global $post;
 		/**
 		 * Enqueue on the settings page for the gateways
 		 */
 		if ( isset( $_GET['page'], $_GET['tab'], $_GET['section'] ) ) {
-			if ( $_GET['page'] === 'wc-settings' && $_GET['tab'] === 'checkout' && array_key_exists( $_GET['section'], array_merge( [ 'quickpay' => null ], WC_QuickPay::get_gateway_instances() ) ) ) {
+			if ( $_GET['page'] === 'wc-settings' && $_GET['tab'] === 'checkout' && array_key_exists( sanitize_text_field( wp_unslash( $_GET['section'] ) ), array_merge( [ 'quickpay' => null ], WC_QuickPay::get_gateway_instances() ) ) ) {
 				return true;
 			}
 		} /**
@@ -176,7 +176,7 @@ class WC_QuickPay_Helper {
 	 * @return void
 	 */
 	public static function load_i18n() {
-		load_plugin_textdomain( 'woo-quickpay', false, dirname( dirname( plugin_basename( __FILE__ ) ) ) . '/languages/' );
+		load_plugin_textdomain( 'woocommerce-quickpay', false, dirname( dirname( plugin_basename( __FILE__ ) ) ) . '/languages/' );
 	}
 
 
@@ -323,7 +323,7 @@ class WC_QuickPay_Helper {
 	 * @return bool
 	 */
 	public static function spamshield_bypass_security_check( $bypass ) {
-		return isset( $_GET['wc-api'] ) && strtolower( $_GET['wc-api'] ) === 'wc_quickpay';
+		return isset( $_GET['wc-api'] ) && strtolower( sanitize_text_field( wp_unslash( $_GET['wc-api'] ) ) ) === 'wc_quickpay';
 	}
 
 	/**
@@ -368,7 +368,7 @@ class WC_QuickPay_Helper {
 			return false;
 		}
 
-		$u_agent = $_SERVER['HTTP_USER_AGENT'];
+		$u_agent = sanitize_text_field( wp_unslash( $_SERVER['HTTP_USER_AGENT'] ) );
 		$name    = 'Unknown';
 
 		if ( false !== stripos( $u_agent, "MSIE" ) && false === stripos( $u_agent, "Opera" ) ) {

@@ -39,7 +39,7 @@ class WC_QuickPay_Admin_Orders_Lists_Table extends WC_QuickPay_Module {
 	 */
 	public function filter_shop_order_posts_columns( $show_columns ): array {
 		$column_name   = 'quickpay_transaction_info';
-		$column_header = __( 'Payment', 'woo-quickpay' );
+		$column_header = esc_html__( 'Payment', 'woocommerce-quickpay' );
 
 		return WC_QuickPay_Helper::array_insert_after( 'shipping_address', $show_columns, $column_name, $column_header );
 	}
@@ -79,7 +79,7 @@ class WC_QuickPay_Admin_Orders_Lists_Table extends WC_QuickPay_Module {
 						'transaction_order_id'       => WC_QuickPay_Order_Payments_Utils::get_transaction_order_id( $order ),
 						'transaction_brand'          => $brand,
 						'transaction_brand_logo_url' => WC_QuickPay_Helper::get_payment_type_logo( $brand ?: $transaction->get_acquirer() ),
-						'transaction_status'         => WC_QuickPay_Order_Utils::is_failed_renewal( $order ) ? __( 'Failed renewal', 'woo-quickpay' ) : $transaction->get_current_type(),
+						'transaction_status'         => WC_QuickPay_Order_Utils::is_failed_renewal( $order ) ? esc_html__( 'Failed renewal', 'woocommerce-quickpay' ) : $transaction->get_current_type(),
 						'transaction_is_test'        => $transaction->is_test(),
 						'is_cached'                  => $transaction->is_loaded_from_cached(),
 					] );
@@ -97,8 +97,8 @@ class WC_QuickPay_Admin_Orders_Lists_Table extends WC_QuickPay_Module {
 	 */
 	public function order_bulk_actions( array $actions ): array {
 		if ( apply_filters( 'woocommerce_quickpay_allow_orders_bulk_actions', current_user_can( 'manage_woocommerce' ) ) ) {
-			$actions['quickpay_capture_recurring']   = __( 'QuickPay: Capture payment and activate subscription', 'woo-quickpay' );
-			$actions['quickpay_create_payment_link'] = __( 'QuickPay: Create payment link', 'woo-quickpay' );
+			$actions['quickpay_capture_recurring']   = esc_html__( 'QuickPay: Capture payment and activate subscription', 'woocommerce-quickpay' );
+			$actions['quickpay_create_payment_link'] = esc_html__( 'QuickPay: Create payment link', 'woocommerce-quickpay' );
 		}
 
 		return $actions;
@@ -111,7 +111,7 @@ class WC_QuickPay_Admin_Orders_Lists_Table extends WC_QuickPay_Module {
 	 */
 	public function subscription_bulk_actions( array $actions ): array {
 		if ( apply_filters( 'woocommerce_quickpay_allow_subscriptions_bulk_actions', current_user_can( 'manage_woocommerce' ) ) ) {
-			$actions['quickpay_create_payment_link'] = __( 'QuickPay: Create payment link', 'woo-quickpay' );
+			$actions['quickpay_create_payment_link'] = esc_html__( 'QuickPay: Create payment link', 'woocommerce-quickpay' );
 		}
 
 		return $actions;
@@ -132,7 +132,7 @@ class WC_QuickPay_Admin_Orders_Lists_Table extends WC_QuickPay_Module {
 			$this->bulk_action_quickpay_capture_recurring( $order_ids );
 
 			// Redirect client
-			wp_redirect( $_SERVER['HTTP_REFERER'] );
+			wp_safe_redirect( wp_unslash($_SERVER['HTTP_REFERER'] ?? $redirect_to) );
 			exit;
 		}
 
@@ -148,10 +148,11 @@ class WC_QuickPay_Admin_Orders_Lists_Table extends WC_QuickPay_Module {
 			}
 
 			if ( $changed ) {
-				woocommerce_quickpay_add_admin_notice( sprintf( __( 'Payment links created for %d orders.', 'woo-quickpay' ), $changed ) );
+				/* translators: 1: count of orders handled  */
+				woocommerce_quickpay_add_admin_notice( sprintf( esc_html__( 'Payment links created for %d orders.', 'woocommerce-quickpay' ), $changed ) );
 			}
 
-			wp_redirect( $_SERVER['HTTP_REFERER'] );
+			wp_safe_redirect( wp_unslash($_SERVER['HTTP_REFERER'] ?? $redirect_to) );
 			exit;
 		}
 
@@ -179,10 +180,11 @@ class WC_QuickPay_Admin_Orders_Lists_Table extends WC_QuickPay_Module {
 			}
 
 			if ( $changed ) {
-				woocommerce_quickpay_add_admin_notice( sprintf( __( 'Payment links created for %d subscriptions.', 'woo-quickpay' ), $changed ) );
+				/* translators: 1: count of subscriptions handled */
+				woocommerce_quickpay_add_admin_notice( sprintf( esc_html__( 'Payment links created for %d subscriptions.', 'woocommerce-quickpay' ), $changed ) );
 			}
 
-			wp_redirect( $_SERVER['HTTP_REFERER'] );
+			wp_safe_redirect( wp_unslash($_SERVER['HTTP_REFERER'] ?? $redirect_to) );
 			exit;
 		}
 

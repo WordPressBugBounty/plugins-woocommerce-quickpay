@@ -22,11 +22,12 @@ if ( ! defined( 'ABSPATH' ) ) {
 echo '= ' . esc_html( $email_heading ) . " =\n\n";
 
 /* translators: %s: Customer first name */
-echo sprintf( esc_html__( 'Hi %s,', 'woocommerce' ), esc_html( $order->get_billing_first_name() ) ) . "\n\n";
+echo sprintf( esc_html__( 'Hi %s,', 'woocommerce-quickpay' ), esc_html( $order->get_billing_first_name() ) ) . "\n\n";
 
-echo esc_html__( 'Thank you for your order.', 'woo-quickpay' ) . "\n\n";
+echo esc_html__( 'Thank you for your order.', 'woocommerce-quickpay' ) . "\n\n";
 
-echo sprintf(esc_html__( 'Use the following link to pay and complete your order: %s', 'woo-quickpay' ). $payment_link) . "\n\n";
+/* translators: 1: The payment link */
+echo esc_html(sprintf(__( 'Use the following link to pay and complete your order: %s', 'woocommerce-quickpay' ). $payment_link)). "\n\n";
 
 echo "=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=\n\n";
 
@@ -51,7 +52,7 @@ do_action( 'woocommerce_email_order_meta', $order, $sent_to_admin, $plain_text, 
  */
 do_action( 'woocommerce_email_customer_details', $order, $sent_to_admin, $plain_text, $email );
 
-echo esc_html__( 'Thanks for shopping with us.', 'woocommerce' ) . "\n\n";
+echo esc_html__( 'Thanks for shopping with us.', 'woocommerce-quickpay' ) . "\n\n";
 
 echo "\n=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=\n\n";
 

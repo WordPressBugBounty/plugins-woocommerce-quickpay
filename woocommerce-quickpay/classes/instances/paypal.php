@@ -34,26 +34,26 @@ class WC_QuickPay_PayPal extends WC_QuickPay_Instance {
 	public function init_form_fields(): void {
 		$this->form_fields = [
 			'enabled'     => [
-				'title'   => __( 'Enable', 'woo-quickpay' ),
+				'title'   => esc_html__( 'Enable', 'woocommerce-quickpay' ),
 				'type'    => 'checkbox',
-				'label'   => __( 'Enable PayPal payment', 'woo-quickpay' ),
+				'label'   => esc_html__( 'Enable PayPal payment', 'woocommerce-quickpay' ),
 				'default' => 'no'
 			],
 			'_Shop_setup' => [
 				'type'  => 'title',
-				'title' => __( 'Shop setup', 'woo-quickpay' ),
+				'title' => esc_html__( 'Shop setup', 'woocommerce-quickpay' ),
 			],
 			'title'       => [
-				'title'       => __( 'Title', 'woo-quickpay' ),
+				'title'       => esc_html__( 'Title', 'woocommerce-quickpay' ),
 				'type'        => 'text',
-				'description' => __( 'This controls the title which the user sees during checkout.', 'woo-quickpay' ),
-				'default'     => __( 'PayPal', 'woo-quickpay' )
+				'description' => esc_html__( 'This controls the title which the user sees during checkout.', 'woocommerce-quickpay' ),
+				'default'     => esc_html__( 'PayPal', 'woocommerce-quickpay' )
 			],
 			'description' => [
-				'title'       => __( 'Customer Message', 'woo-quickpay' ),
+				'title'       => esc_html__( 'Customer Message', 'woocommerce-quickpay' ),
 				'type'        => 'textarea',
-				'description' => __( 'This controls the description which the user sees during checkout.', 'woo-quickpay' ),
-				'default'     => __( 'Pay with PayPal', 'woo-quickpay' )
+				'description' => esc_html__( 'This controls the description which the user sees during checkout.', 'woocommerce-quickpay' ),
+				'default'     => esc_html__( 'Pay with PayPal', 'woocommerce-quickpay' )
 			],
 		];
 	}

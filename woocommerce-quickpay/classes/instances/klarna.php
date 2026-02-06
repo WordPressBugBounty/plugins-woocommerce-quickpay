@@ -33,26 +33,26 @@ class WC_QuickPay_Klarna extends WC_QuickPay_Instance {
     {
         $this->form_fields = [
             'enabled' => [
-                'title' => __( 'Enable', 'woo-quickpay' ),
+                'title' => esc_html__( 'Enable', 'woocommerce-quickpay' ),
                 'type' => 'checkbox',
-                'label' => __( 'Enable Klarna payment', 'woo-quickpay' ),
+                'label' => esc_html__( 'Enable Klarna payment', 'woocommerce-quickpay' ),
                 'default' => 'no'
             ],
             '_Shop_setup' => [
                 'type' => 'title',
-                'title' => __( 'Shop setup', 'woo-quickpay' ),
+                'title' => esc_html__( 'Shop setup', 'woocommerce-quickpay' ),
             ],
             'title' => [
-                'title' => __( 'Title', 'woo-quickpay' ),
+                'title' => esc_html__( 'Title', 'woocommerce-quickpay' ),
                 'type' => 'text',
-                'description' => __( 'This controls the title which the user sees during checkout.', 'woo-quickpay' ),
-                'default' => __('Klarna', 'woo-quickpay')
+                'description' => esc_html__( 'This controls the title which the user sees during checkout.', 'woocommerce-quickpay' ),
+                'default' => esc_html__('Klarna', 'woocommerce-quickpay')
             ],
             'description' => [
-                'title' => __( 'Customer Message', 'woo-quickpay' ),
+                'title' => esc_html__( 'Customer Message', 'woocommerce-quickpay' ),
                 'type' => 'textarea',
-                'description' => __( 'This controls the description which the user sees during checkout.', 'woo-quickpay' ),
-                'default' => __('Pay with Klarna', 'woo-quickpay')
+                'description' => esc_html__( 'This controls the description which the user sees during checkout.', 'woocommerce-quickpay' ),
+                'default' => esc_html__('Pay with Klarna', 'woocommerce-quickpay')
             ],
         ];
     }

@@ -66,7 +66,7 @@ function woocommerce_quickpay_create_payment_link( $order, bool $force_update = 
 	$order = woocommerce_quickpay_get_order( $order );
 
 	if ( ! $order->needs_payment() && ! WC_QuickPay_Requests_Utils::is_request_to_change_payment() ) {
-		throw new Exception( __( 'Order does not need payment', 'woo-quickpay' ) );
+		throw new Exception( esc_html__( 'Order does not need payment', 'woocommerce-quickpay' ) );
 	}
 
 	$transaction = woocommerce_quickpay_get_transaction_instance_by_order( $order );

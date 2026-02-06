@@ -23,7 +23,7 @@ class WC_QuickPay_Callbacks {
 				// Set transaction ID without marking the payment as complete
 				$order->set_transaction_id( $transaction->id );
 			} catch ( WC_Data_Exception $e ) {
-				WC_QP()->log->add( __( 'An error occured while setting transaction id: %d on order %s. %s', $transaction->id, $order->get_id(), $e->getMessage() ) );
+				WC_QP()->log->add( sprintf( 'An error occured while setting transaction id: %1$d on order %2$s. %3$s', $transaction->id, $order->get_id(), $e->getMessage() ) );
 			}
 			WC_Pre_Orders_Order::mark_order_as_pre_ordered( $order );
 		} /**
@@ -37,7 +37,8 @@ class WC_QuickPay_Callbacks {
 		}
 
 		// Write a note to the order history
-		WC_QuickPay_Order_Utils::add_note( $order, sprintf( __( 'Payment authorized. Transaction ID: %s', 'woo-quickpay' ), $transaction->id ) );
+		/* translators: 1: Transaction ID */
+		WC_QuickPay_Order_Utils::add_note( $order, sprintf( esc_html__( 'Payment authorized. Transaction ID: %s', 'woocommerce-quickpay' ), $transaction->id ) );
 
 		// Fallback to save transaction IDs since this has seemed to sometimes fail when using WC_Order::payment_complete
 		self::save_transaction_id_fallback( $order, $transaction );
@@ -52,7 +53,7 @@ class WC_QuickPay_Callbacks {
 	 * @param stdClass $transaction
 	 */
 	public static function payment_captured( WC_Order $order, $transaction ) {
-		$capture_note = __( 'Payment captured.', 'woo-quickpay' );
+		$capture_note = esc_html__( 'Payment captured.', 'woocommerce-quickpay' );
 
 		$complete = WC_QuickPay_Helper::option_is_enabled( WC_QP()->s( 'quickpay_complete_on_capture' ) ) && ! $order->has_status( 'completed' );
 
@@ -86,7 +87,7 @@ class WC_QuickPay_Callbacks {
 
 		// Allow 3rd party code to overwrite the note
 		$transition_status_note = apply_filters( 'woocommerce_quickpay_payment_cancelled_order_transition_status_note',
-			__( 'Payment cancelled.', 'woo-quickpay' ),
+			__( 'Payment cancelled.', 'woocommerce-quickpay' ),
 			$order,
 			$transaction,
 			$operation,
@@ -111,7 +112,8 @@ class WC_QuickPay_Callbacks {
 	 * @param stdClass $transaction
 	 */
 	public static function subscription_authorized( $subscription, WC_Order $related_order, $transaction ): void {
-		WC_QuickPay_Order_Utils::add_note( $subscription, sprintf( __( 'Subscription authorized. Transaction ID: %s', 'woo-quickpay' ), $transaction->id ) );
+		/* translators: 1: Subscription transaction id */
+		WC_QuickPay_Order_Utils::add_note( $subscription, sprintf( esc_html__( 'Subscription authorized. Transaction ID: %s', 'woocommerce-quickpay' ), $transaction->id ) );
 		// Activate the subscription
 
 		// Mark the payment as complete
@@ -196,7 +198,7 @@ class WC_QuickPay_Callbacks {
 		}
 
 		if ( isset( $_GET['order_post_id'] ) ) {
-			return (int) trim( $_GET['order_post_id'] );
+			return absint( trim( sanitize_text_field( wp_unslash( $_GET['order_post_id'] ) ) ) );
 		}
 
 		// Fallback
@@ -220,7 +222,7 @@ class WC_QuickPay_Callbacks {
 		}
 
 		if ( isset( $_GET['subscription_post_id'] ) ) {
-			return (int) trim( $_GET['subscription_post_id'] );
+			return absint( trim( sanitize_text_field( wp_unslash( $_GET['subscription_post_id'] ) ) ) );
 		}
 
 		return null;

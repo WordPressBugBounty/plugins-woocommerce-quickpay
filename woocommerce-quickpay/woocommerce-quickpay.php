@@ -1,16 +1,18 @@
 <?php
 /**
- * Plugin Name: WooCommerce Quickpay
+ * Plugin Name: Quickpay for WooCommerce
  * Plugin URI: http://wordpress.org/plugins/woocommerce-quickpay/
  * Description: Integrates your Quickpay payment gateway into your WooCommerce installation.
- * Version: 7.4.0
+ * Version: 7.5.1
  * Author: Perfect Solution
- * Text Domain: woo-quickpay
+ * Text Domain: woocommerce-quickpay
  * Domain Path: /languages/
  * Author URI: http://perfect-solution.dk
  * Wiki: http://quickpay.perfect-solution.dk/
  * WC requires at least: 7.1.0
- * WC tested up to: 8.9
+ * WC tested up to: 10.5
+ * License: GPLv2
+ * License URI: https://www.gnu.org/licenses/gpl-2.0.html
  * Requires Plugins: woocommerce
  */
 
@@ -19,7 +21,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'WCQP_VERSION', '7.4.0' );
+define( 'WCQP_VERSION', '7.5.1' );
 define( 'WCQP_URL', plugins_url( __FILE__ ) );
 define( 'WCQP_PATH', plugin_dir_path( __FILE__ ) );
 
@@ -30,9 +32,9 @@ add_action( 'plugins_loaded', 'init_quickpay_gateway', 0 );
  */
 function wc_quickpay_woocommerce_inactive_notice() {
 	$class    = 'notice notice-error';
-	$headline = __( 'WooCommerce Quickpay requires WooCommerce to be active.', 'woo-quickpay' );
-	$message  = __( 'Go to the plugins page to activate WooCommerce', 'woo-quickpay' );
-	printf( '<div class="%1$s"><h2>%2$s</h2><p>%3$s</p></div>', $class, $headline, $message );
+	$headline = __( 'Quickpay for WooCommerce requires WooCommerce to be active.', 'woocommerce-quickpay' );
+	$message  = __( 'Go to the plugins page to activate WooCommerce', 'woocommerce-quickpay' );
+	printf( '<div class="%1$s"><h2>%2$s</h2><p>%3$s</p></div>', esc_attr( $class ), esc_html( $headline ), esc_html( $message ) );
 }
 
 function init_quickpay_gateway() {
@@ -332,7 +334,7 @@ function init_quickpay_gateway() {
 		 */
 		public static function add_action_links( $links ) {
 			$links = array_merge( [
-				'<a href="' . WC_QuickPay_Settings::get_settings_page_url() . '">' . __( 'Settings', 'woo-quickpay' ) . '</a>',
+				'<a href="' . WC_QuickPay_Settings::get_settings_page_url() . '">' . __( 'Settings', 'woocommerce-quickpay' ) . '</a>',
 			], $links );
 
 			return $links;
@@ -403,7 +405,7 @@ function init_quickpay_gateway() {
 		 */
 		public function payment_fields(): void {
 			if ( $description = $this->get_description() ) {
-				echo wpautop( wptexturize( $description ) );
+				echo wp_kses_post( wpautop( wptexturize( $description ) ) );
 			}
 		}
 
@@ -526,7 +528,8 @@ function init_quickpay_gateway() {
 
 				// Check if there is a transaction ID
 				if ( ! $transaction_id ) {
-					throw new QuickPay_Exception( sprintf( __( "No transaction ID for order: %s", 'woo-quickpay' ), $order_id ) );
+					/* translators: 1: the order id */
+					throw new QuickPay_Exception( sprintf( __( "No transaction ID for order: %s", 'woocommerce-quickpay' ), $order_id ) );
 				}
 
 				// Create a payment instance and retrieve transaction information
@@ -536,10 +539,10 @@ function init_quickpay_gateway() {
 				// Check if the transaction can be refunded
 				if ( ! $payment->is_action_allowed( 'refund' ) ) {
 					if ( in_array( $payment->get_current_type(), [ 'authorize', 'recurring' ], true ) ) {
-						throw new QuickPay_Exception( __( 'A non-captured payment cannot be refunded.', 'woo-quickpay' ) );
+						throw new QuickPay_Exception( __( 'A non-captured payment cannot be refunded.', 'woocommerce-quickpay' ) );
 					}
 
-					throw new QuickPay_Exception( __( 'Transaction state does not allow refunds.', 'woo-quickpay' ) );
+					throw new QuickPay_Exception( __( 'Transaction state does not allow refunds.', 'woocommerce-quickpay' ) );
 				}
 
 				// Perform a refund API request
@@ -664,7 +667,7 @@ function init_quickpay_gateway() {
 				'post_meta' => [
 					'_quickpay_transaction_id' => [
 						'value' => WC_QuickPay_Order_Utils::get_transaction_id( $subscription ),
-						'label' => __( 'QuickPay Transaction ID', 'woo-quickpay' ),
+						'label' => __( 'QuickPay Transaction ID', 'woocommerce-quickpay' ),
 					],
 				],
 			];
@@ -692,7 +695,8 @@ function init_quickpay_gateway() {
 					$transaction->get( $transaction_id );
 
 					// If transaction could be found, add a note on the order for history and debugging reasons.
-					$subscription->add_order_note( sprintf( __( 'QuickPay Transaction ID updated from #%d to #%d', 'woo-quickpay' ), $sub_transaction_id, $transaction_id ), 0, true );
+					/* translators: 1: old transaction ID, 2: new transaction ID */
+					$subscription->add_order_note( sprintf( esc_html__( 'QuickPay Transaction ID updated from #%1$d to #%2$d', 'woocommerce-quickpay' ), $sub_transaction_id, $transaction_id ), 0, true );
 				}
 			}
 		}
@@ -749,16 +753,22 @@ function init_quickpay_gateway() {
 
 			// Redirect the customer to account page if the current order is failed
 			if ( $order->get_status() === 'failed' ) {
-				$payment_failure_text = sprintf( __( '<p><strong>Payment failure</strong> A problem with your payment on order <strong>#%i</strong> occured. Please try again to complete your order.</p>', 'woo-quickpay' ), $order_id );
+				$payment_failure_text = sprintf(
+					'<p><strong>%1$s</strong> %2$s %3$s</p>',
+					esc_html__( 'Payment failure', 'woocommerce-quickpay' ),
+						/* translators: 1: order number */
+						esc_html( sprintf( __( 'A problem with your payment on order %d occurred.', 'woocommerce-quickpay' ), absint( $order_id ) ) ),
+						esc_html__( 'Please try again to complete your order.', 'woocommerce-quickpay' )
+					);
 
 				wc_add_notice( $payment_failure_text, 'error' );
 
-				wp_redirect( get_permalink( get_option( 'woocommerce_myaccount_page_id' ) ) );
+				wp_safe_redirect( get_permalink( get_option( 'woocommerce_myaccount_page_id' ) ) );
 			}
 
-			$order->add_order_note( __( 'QuickPay Payment', 'woo-quickpay' ) . ': ' . __( 'Cancelled during process', 'woo-quickpay' ) );
+			$order->add_order_note( esc_html__( 'QuickPay Payment', 'woocommerce-quickpay' ) . ': ' . esc_html__( 'Cancelled during process', 'woocommerce-quickpay' ) );
 
-			wc_add_notice( __( '<p><strong>%s</strong>: %s</p>', __( 'Payment cancelled', 'woo-quickpay' ), __( 'Due to cancellation of your payment, the order process was not completed. Please fulfill the payment to complete your order.', 'woo-quickpay' ) ), 'error' );
+			wc_add_notice( sprintf( '<p><strong>%s</strong>: %s</p>', esc_html__( 'Payment cancelled', 'woocommerce-quickpay' ), esc_html__( 'Due to cancellation of your payment, the order process was not completed. Please fulfill the payment to complete your order.', 'woocommerce-quickpay' ) ), 'error' );
 		}
 
 		/**
@@ -823,7 +833,8 @@ function init_quickpay_gateway() {
 									break;
 
 								case 'refund' :
-									$order->add_order_note( sprintf( 'Quickpay: ' . __( 'Refunded %s %s', 'woo-quickpay' ), WC_QuickPay_Helper::price_normalize( $transaction->amount, $json->currency ), $json->currency ) );
+									/* translators: 1: price, 2: currency code */
+									$order->add_order_note( sprintf( 'Quickpay: ' . __( 'Refunded %1$s %2$s', 'woocommerce-quickpay' ), WC_QuickPay_Helper::price_normalize( $transaction->amount, $json->currency ), $json->currency ) );
 									break;
 
 								case 'recurring':
@@ -870,7 +881,8 @@ function init_quickpay_gateway() {
 						}
 					}
 				} else {
-					$this->log->add( sprintf( __( 'Invalid callback body for order #%s.', 'woo-quickpay' ), $order_number ) );
+					/* translators: 1: the order id */
+					$this->log->add( sprintf( __( 'Invalid callback body for order #%s.', 'woocommerce-quickpay' ), $order_number ) );
 				}
 			} catch ( JsonException $e ) {
 				wp_send_json_error( 'Invalid request', 400 );
@@ -909,7 +921,8 @@ function init_quickpay_gateway() {
 		 */
 		public function generate_settings_html( $form_fields = array(), $echo = true ) {
 			$html = sprintf( "<p><small>Version: %s</small>", WCQP_VERSION );
-			$html .= "<p>" . sprintf( __( 'Allows you to receive payments via %s', 'woo-quickpay' ), $this->get_method_title() ) . "</p>";
+			/* translators: 1: payment method title */
+			$html .= "<p>" . sprintf( __( 'Allows you to receive payments via %s', 'woocommerce-quickpay' ), $this->get_method_title() ) . "</p>";
 			$html .= WC_QuickPay_Settings::clear_logs_section();
 
 			ob_start();
@@ -923,7 +936,7 @@ function init_quickpay_gateway() {
 			$html .= ob_get_clean();
 
 			if ( $echo ) {
-				echo $html; // WPCS: XSS ok.
+				echo wp_kses_post( $html ); // WPCS: XSS ok.
 			} else {
 				return $html;
 			}
@@ -946,7 +959,7 @@ function init_quickpay_gateway() {
 			}
 
 			if ( $this->instructions ) {
-				echo wpautop( wptexturize( $this->instructions ) );
+				echo wp_kses_post( wpautop( wptexturize( $this->instructions ) ) );
 			}
 		}
 

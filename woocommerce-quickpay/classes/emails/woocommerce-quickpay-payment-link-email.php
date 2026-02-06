@@ -10,8 +10,8 @@ class WC_QuickPay_Payment_Link_Email extends WC_Email {
 	public function __construct() {
 		$this->customer_email = true;
 		$this->id             = 'woocommerce_quickpay_payment_link';
-		$this->title          = __( 'Payment link created', 'woo-quickpay' );
-		$this->description    = __( 'This e-mail is sent upon manual payment link creation by a shop admin.', 'woo-quickpay' );
+		$this->title          = esc_html__( 'Payment link created', 'woocommerce-quickpay' );
+		$this->description    = esc_html__( 'This e-mail is sent upon manual payment link creation by a shop admin.', 'woocommerce-quickpay' );
 		$this->template_html  = 'emails/customer-quickpay-payment-link.php';
 		$this->template_plain = 'emails/plain/customer-quickpay-payment-link.php';
 		$this->placeholders   = [
@@ -90,33 +90,33 @@ class WC_QuickPay_Payment_Link_Email extends WC_Email {
 	public function init_form_fields(): void {
 		$this->form_fields = [
 			'enabled'    => [
-				'title'   => __( 'Enable/Disable', 'woocommerce' ),
+				'title'   => esc_html__( 'Enable/Disable', 'woocommerce-quickpay' ),
 				'type'    => 'checkbox',
-				'label'   => __( 'Enable this email notification', 'woocommerce' ),
+				'label'   => esc_html__( 'Enable this email notification', 'woocommerce-quickpay' ),
 				'default' => 'yes',
 			],
 			'subject'    => [
-				'title'       => __( 'Subject', 'woocommerce' ),
+				'title'       => esc_html__( 'Subject', 'woocommerce-quickpay' ),
 				'type'        => 'text',
 				'desc_tip'    => true,
 				/* translators: %s: list of placeholders */
-				'description' => sprintf( __( 'Available placeholders: %s', 'woocommerce' ), '<code>{site_title}, {order_date}, {order_number}</code>' ),
+				'description' => sprintf( esc_html__( 'Available placeholders: %s', 'woocommerce-quickpay' ), '<code>{site_title}, {order_date}, {order_number}</code>' ),
 				'placeholder' => $this->get_default_subject(),
 				'default'     => '',
 			],
 			'heading'    => [
-				'title'       => __( 'Email heading', 'woocommerce' ),
+				'title'       => esc_html__( 'Email heading', 'woocommerce-quickpay' ),
 				'type'        => 'text',
 				'desc_tip'    => true,
 				/* translators: %s: list of placeholders */
-				'description' => sprintf( __( 'Available placeholders: %s', 'woocommerce' ), '<code>{site_title}, {order_date}, {order_number}</code>' ),
+				'description' => sprintf( esc_html__( 'Available placeholders: %s', 'woocommerce-quickpay' ), '<code>{site_title}, {order_date}, {order_number}</code>' ),
 				'placeholder' => $this->get_default_heading(),
 				'default'     => '',
 			],
 			'email_type' => [
-				'title'       => __( 'Email type', 'woocommerce' ),
+				'title'       => esc_html__( 'Email type', 'woocommerce-quickpay' ),
 				'type'        => 'select',
-				'description' => __( 'Choose which format of email to send.', 'woocommerce' ),
+				'description' => esc_html__( 'Choose which format of email to send.', 'woocommerce-quickpay' ),
 				'default'     => 'html',
 				'class'       => 'email_type wc-enhanced-select',
 				'options'     => $this->get_email_type_options(),
@@ -132,7 +132,7 @@ class WC_QuickPay_Payment_Link_Email extends WC_Email {
 	 * @return string
 	 */
 	public function get_default_subject() {
-		return __( 'Payment link for your order ({order_number})', 'woo-quickpay' );
+		return esc_html__( 'Payment link for your order ({order_number})', 'woocommerce-quickpay' );
 	}
 
 	/**
@@ -142,6 +142,6 @@ class WC_QuickPay_Payment_Link_Email extends WC_Email {
 	 * @return string
 	 */
 	public function get_default_heading() {
-		return __( 'This is your payment link', 'woo-quickpay' );
+		return esc_html__( 'This is your payment link', 'woocommerce-quickpay' );
 	}
 }

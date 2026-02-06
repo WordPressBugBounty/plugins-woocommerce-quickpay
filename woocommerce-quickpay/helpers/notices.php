@@ -109,7 +109,7 @@ function woocommere_quickpay_display_dismissible_admin_notices( $clear = true ) 
 		if ( ! empty( $notices ) ) {
 			array_walk( $notices, 'esc_html' );
 			echo '<div class="wcqp-notice notice notice-error is-dismissible">';
-			printf( '<h3>%s</h3>', __( 'Quickpay - Payment related problems registered' ) );
+			printf( '<h3>%s</h3>', esc_html__( 'Quickpay - Payment related problems registered', 'woocommerce-quickpay') );
 			echo '<p>' . wp_kses_post( implode( "</p>\n<p>", $notices ) ) . '</p>';
 			echo '</div>';
 		}

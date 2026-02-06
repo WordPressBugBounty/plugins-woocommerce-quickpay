@@ -32,26 +32,26 @@ class WC_QuickPay_FBG1886 extends WC_QuickPay_Instance {
 	public function init_form_fields(): void {
 		$this->form_fields = [
 			'enabled'     => [
-				'title'   => __( 'Enable', 'woo-quickpay' ),
+				'title'   => esc_html__( 'Enable', 'woocommerce-quickpay' ),
 				'type'    => 'checkbox',
-				'label'   => __( 'Enable Forbrugsforeningen payment', 'woo-quickpay' ),
+				'label'   => esc_html__( 'Enable Forbrugsforeningen payment', 'woocommerce-quickpay' ),
 				'default' => 'no'
 			],
 			'_Shop_setup' => [
 				'type'  => 'title',
-				'title' => __( 'Shop setup', 'woo-quickpay' ),
+				'title' => esc_html__( 'Shop setup', 'woocommerce-quickpay' ),
 			],
 			'title'       => [
-				'title'       => __( 'Title', 'woo-quickpay' ),
+				'title'       => esc_html__( 'Title', 'woocommerce-quickpay' ),
 				'type'        => 'text',
-				'description' => __( 'This controls the title which the user sees during checkout.', 'woo-quickpay' ),
-				'default'     => __( 'Forbrugsforeningen af 1886', 'woo-quickpay' )
+				'description' => esc_html__( 'This controls the title which the user sees during checkout.', 'woocommerce-quickpay' ),
+				'default'     => esc_html__( 'Forbrugsforeningen af 1886', 'woocommerce-quickpay' )
 			],
 			'description' => [
-				'title'       => __( 'Customer Message', 'woo-quickpay' ),
+				'title'       => esc_html__( 'Customer Message', 'woocommerce-quickpay' ),
 				'type'        => 'textarea',
-				'description' => __( 'This controls the description which the user sees during checkout.', 'woo-quickpay' ),
-				'default'     => __( 'Pay with Forbrugsforeningen af 1886', 'woo-quickpay' )
+				'description' => esc_html__( 'This controls the description which the user sees during checkout.', 'woocommerce-quickpay' ),
+				'default'     => esc_html__( 'Pay with Forbrugsforeningen af 1886', 'woocommerce-quickpay' )
 			],
 		];
 	}
