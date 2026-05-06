@@ -1,0 +1,150 @@
+<?php
+
+/**
+ * Store a message to display in WP admin.
+ *
+ * @param string The message to display
+ *
+ * @since 4.9.4
+ */
+if ( ! function_exists( 'woocommerce_quickpay_add_admin_notice' ) ) {
+	function woocommerce_quickpay_add_admin_notice( $message, $notice_type = 'success' ) {
+
+		$notices = get_transient( '_wcqp_admin_notices' );
+
+		if ( false === $notices ) {
+			$notices = [];
+		}
+
+		$notices[ $notice_type ][] = $message;
+
+		set_transient( '_wcqp_admin_notices', $notices, 60 * 60 );
+	}
+}
+
+
+/**
+ * Store a message to display in WP admin.
+ *
+ * @param $message
+ * @param string $notice_type
+ *
+ * @since 4.9.4
+ */
+if ( ! function_exists( 'woocommerce_quickpay_add_runtime_error_notice' ) ) {
+	function woocommerce_quickpay_add_runtime_error_notice( $error ) {
+
+		$errors = get_transient( '_wcqp_admin_runtime_errors' );
+
+		if ( false === $errors ) {
+			$errors = [];
+		}
+
+		$errors[] = $error;
+
+		set_transient( '_wcqp_admin_runtime_errors', $errors, 0 );
+	}
+}
+
+
+/**
+ * Delete any admin notices we stored for display later.
+ *
+ * @since 2.0
+ */
+if ( ! function_exists( 'woocommerce_quickpay_clear_admin_notices' ) ) {
+	function woocommerce_quickpay_clear_admin_notices() {
+		delete_transient( '_wcqp_admin_notices' );
+	}
+}
+
+/**
+ * Delete any admin notices we stored for display later.
+ *
+ * @since 2.0
+ */
+if ( ! function_exists( 'woocommerce_quickpay_clear_runtime_errors' ) ) {
+	function woocommerce_quickpay_clear_runtime_error_notices() {
+		delete_transient( '_wcqp_admin_runtime_errors' );
+	}
+}
+
+
+/**
+ * Display any notices added with @param bool $clear
+ *
+ * @see woocommerce_quickpay_add_admin_notice()
+ *
+ * This method is also hooked to 'admin_notices' to display notices there.
+ *
+ * @since 2.0
+ */
+if ( ! function_exists( 'woocommerce_quickpay_display_admin_notices' ) ) {
+	function woocommerce_quickpay_display_admin_notices( $clear = true ) {
+
+		$notices = get_transient( '_wcqp_admin_notices' );
+
+		if ( false !== $notices && ! empty( $notices ) ) {
+			if ( ! empty( $notices['success'] ) ) {
+				array_walk( $notices['success'], 'esc_html' );
+				echo '<div class="notice notice-success"><p>' . wp_kses_post( implode( "</p>\n<p>", $notices['success'] ) ) . '</p></div>';
+			}
+
+			if ( ! empty( $notices['info'] ) ) {
+				array_walk( $notices['info'], 'esc_html' );
+				echo '<div class="notice notice-info"><p>' . wp_kses_post( implode( "</p>\n<p>", $notices['info'] ) ) . '</p></div>';
+			}
+
+			if ( ! empty( $notices['warning'] ) ) {
+				array_walk( $notices['warning'], 'esc_html' );
+				echo '<div class="notice notice-warning"><p>' . wp_kses_post( implode( "</p>\n<p>", $notices['warning'] ) ) . '</p></div>';
+			}
+
+			if ( ! empty( $notices['error'] ) ) {
+				array_walk( $notices['error'], 'esc_html' );
+				echo '<div class="notice notice-error"><p>' . wp_kses_post( implode( "</p>\n<p>", $notices['error'] ) ) . '</p></div>';
+			}
+		}
+
+		if ( false !== $clear ) {
+			woocommerce_quickpay_clear_admin_notices();
+		}
+	}
+}
+
+/**
+ * Display any notices added with @param bool $clear
+ *
+ * @see woocommerce_quickpay_add_admin_notice()
+ *
+ * This method is also hooked to 'admin_notices' to display notices there.
+ *
+ * @since 2.0
+ */
+if ( ! function_exists( 'woocommerce_quickpay_display_dismissible_admin_notices' ) ) {
+	function woocommerce_quickpay_display_dismissible_admin_notices( $clear = true ) {
+
+		$notices = get_transient( '_wcqp_admin_runtime_errors' );
+
+		if ( false !== $notices && ! empty( $notices ) ) {
+			if ( ! empty( $notices ) ) {
+				array_walk( $notices, 'esc_html' );
+				echo '<div class="wcqp-notice notice notice-error is-dismissible">';
+				printf( '<h3>%s</h3>', esc_html__( 'Quickpay - Payment related problems registered', 'woocommerce-quickpay' ) );
+				echo '<p>' . wp_kses_post( implode( "</p>\n<p>", $notices ) ) . '</p>';
+				echo '</div>';
+			}
+		}
+	}
+}
+
+/**
+ * Endpoint to flush the persisted errors
+ */
+if ( ! function_exists( 'woocommerce_quickpay_ajax_flush_runtime_errors' ) ) {
+	function woocommerce_quickpay_ajax_flush_runtime_errors() {
+		if ( current_user_can( 'manage_woocommerce' ) ) {
+			delete_transient( '_wcqp_admin_runtime_errors' );
+		}
+	}
+}

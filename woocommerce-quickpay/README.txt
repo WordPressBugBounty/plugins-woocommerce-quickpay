@@ -3,7 +3,7 @@ Contributors: PerfectSolution
 Tags: gateway, payment, quickpay, woocommerce, subscriptions
 Requires at least: 6.7
 Tested up to: 6.8
-Stable tag: 7.5.1
+Stable tag: 8.0.0
 License: GPLv2
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -36,6 +36,18 @@ in the plugin settings, but transaction details may include order information an
 Link to Quickpay terms of service: https://quickpay.net/terms-of-service/
 
 == Changelog ==
+= 8.0.0 =
+* Breaking: The plugin has been fully rewritten with a modern, layered architecture. While backwards compatibility is maintained through class aliases and legacy wrappers, any custom code relying on internal classes or static helpers should be reviewed.
+* Feature: Add setting for adding a deadline in the payment window.
+* Feature: Show confirmation notice when a payment link is created from the single order page.
+* Feature: Add possibility to show custom info/warning notices in the admin via the `woocommerce_quickpay_add_admin_notice` hook.
+* Feature: Added support for QTranslate X language switching.
+* Feature: Added SpamShield integration support.
+* Change: Removed Anyday availability cart filter which has been requested. This should now be handled on merchant side.
+* Dev: Complete architectural rewrite into a layered structure (Admin, Application, WooCommerce, Compatibility, Extensions, Infrastructure) for improved maintainability and testability.
+* Dev: Legacy static helpers (`WC_QuickPay_Helper`, `WC_QuickPay_Subscription`, `WC_QuickPay_Log`, etc.) are now backed by compatibility wrappers — deprecated and will be removed in a future version.
+* Dev: Introduced PHPUnit test suite with isolated domain-layer tests (no WordPress bootstrap required).
+
 = 7.5.1 =
 * Feat: Adding WordPress home URL domain name to referer_url when creating transactions.
 

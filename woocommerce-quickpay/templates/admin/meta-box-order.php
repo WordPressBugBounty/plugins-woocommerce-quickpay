@@ -1,4 +1,7 @@
 <?php
+
+use QuickpayPSP\WooCommerce\Support\GatewayUtils;
+
 if ( ! defined( 'ABSPATH' ) ) {
     exit;
 } // Exit if accessed directly
@@ -71,7 +74,7 @@ if ( ! defined( 'ABSPATH' ) ) {
     <p>
         <small>
             <strong><?php echo esc_html__( 'Transaction ID', 'woocommerce-quickpay' ) ?>:</strong> <?php echo esc_html( $transaction_id ) ?>
-            <?php if ( $brand_image_url = WC_Quickpay_Helper::get_payment_type_logo( $transaction_brand ) ) : ?>
+            <?php if ( $brand_image_url = GatewayUtils::get_payment_type_logo( $transaction_brand ) ) : ?>
                 <span class="qp-meta-card">
                 <img src="<?php echo esc_attr( $brand_image_url ) ?>" alt="<?php echo esc_attr( $transaction_brand ) ?>"/>
             </span>

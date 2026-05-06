@@ -25,7 +25,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 
                 $.post('<?php echo esc_url( admin_url( 'admin-ajax.php' ) ); ?>', {
                     action: 'quickpay_run_data_upgrader',
-                    nonce: '<?php echo esc_attr( WC_QuickPay_Install::create_run_upgrader_nonce() ); ?>'
+                    nonce: '<?php echo esc_attr( isset( $nonce ) ? $nonce : '' ); ?>'
                 }, function () {
                     message.append($('<p></p>').text("<?php esc_html_e( 'The upgrader is now running. This might take a while. The notice will disappear once the upgrade is complete.', 'woocommerce-quickpay' ); ?>"));
                 });

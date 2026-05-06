@@ -123,7 +123,7 @@
                 if (response.success === true) {
                     var message = $('<div id="message" class="updated"><p>' + response.data.message + '</p></div>');
                 } else {
-                    var message = $('<div id="message" class="error"><p>' + response.data + '</p></div>');
+                    var message = $('<div id="message" class="error"><p>' + (response.data?.message || response.data) + '</p></div>');
                 }
                 message.hide();
                 message.insertBefore($('#wcqp_wiki'));
