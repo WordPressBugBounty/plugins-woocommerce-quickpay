@@ -3,7 +3,7 @@ Contributors: PerfectSolution
 Tags: gateway, payment, quickpay, woocommerce, subscriptions
 Requires at least: 6.7
 Tested up to: 6.8
-Stable tag: 8.0.0
+Stable tag: 8.0.1
 License: GPLv2
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -36,6 +36,9 @@ in the plugin settings, but transaction details may include order information an
 Link to Quickpay terms of service: https://quickpay.net/terms-of-service/
 
 == Changelog ==
+= 8.0.1 =
+* Fix: auto-capture and cancel logic for orders were incorrectly triggered on all gateways, causing warnings to be shown in the admin.
+
 = 8.0.0 =
 * Breaking: The plugin has been fully rewritten with a modern, layered architecture. While backwards compatibility is maintained through class aliases and legacy wrappers, any custom code relying on internal classes or static helpers should be reviewed.
 * Feature: Add setting for adding a deadline in the payment window.

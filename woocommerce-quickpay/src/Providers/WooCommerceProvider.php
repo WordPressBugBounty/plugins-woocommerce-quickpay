@@ -104,7 +104,8 @@ class WooCommerceProvider implements ServiceProviderInterface {
 				$s->get( 'woocommerce/subscriptions' ),
 				$s->get( 'quickpay/api/factory' ),
 				$s->get( 'logger' ),
-				$s->get( PaymentLinkService::class )
+				$s->get( PaymentLinkService::class ),
+				$s->get( 'gateway/registry' )->ids()
 			);
 		} );
 

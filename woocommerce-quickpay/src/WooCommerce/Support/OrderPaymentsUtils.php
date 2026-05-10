@@ -2,6 +2,7 @@
 
 namespace QuickpayPSP\WooCommerce\Support;
 
+use QuickpayPSP\WooCommerce\Gateways\GatewayRegistry;
 use QuickpayPSP\WooCommerce\Subscriptions\SubscriptionsFacade;
 use QuickpayPSP\Plugin;
 use QuickpayPSP\Utilities\MoneyUtils;
@@ -102,31 +103,15 @@ final class OrderPaymentsUtils {
 
 
 	public static function is_order_using_quickpay( WC_Order $order ): bool {
-		return in_array( $order->get_payment_method(), [
-			'quickpay_anyday',
-			'quickpay_apple_pay',
-			'quickpay_google_pay',
-			'ideal',
-			'fbg1886',
-			'ideal',
-			'klarna',
-			'mobilepay',
-			'mobilepay_checkout',
-			'mobilepay-subscriptions',
-			'quickpay_paypal',
-			'quickpay',
-			'quickpay-extra',
-			'resurs',
-			'sofort',
-			'swish',
-			'trustly',
-			'viabill',
-			'vipps',
-		], true );
+		return in_array( $order->get_payment_method(), self::gateway_registry()->ids(), true );
 	}
 
 	private static function create_random_string( int $length ): string {
 		return RandomUtils::create_random_string( $length );
+	}
+
+	private static function gateway_registry(): GatewayRegistry {
+		return Plugin::services()->get_as( GatewayRegistry::class, 'gateway/registry' );
 	}
 
 	private static function subscriptions(): SubscriptionsFacade {

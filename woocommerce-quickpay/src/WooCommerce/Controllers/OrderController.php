@@ -24,19 +24,22 @@ final class OrderController {
 	private ApiClientFactory $api_factory;
 	private WooCommerceLogger $logger;
 	private PaymentLinkService $payment_link_service;
+	private array $gateway_ids;
 
 	public function __construct(
 		GatewaySettingsProvider $settings,
 		SubscriptionsFacade $subscriptions_facade,
 		ApiClientFactory $api_factory,
 		WooCommerceLogger $logger,
-		PaymentLinkService $payment_link_service
+		PaymentLinkService $payment_link_service,
+		array $gateway_ids = []
 	) {
 		$this->settings             = $settings;
 		$this->subscriptions_facade = $subscriptions_facade;
 		$this->api_factory          = $api_factory;
 		$this->logger               = $logger;
 		$this->payment_link_service = $payment_link_service;
+		$this->gateway_ids          = $gateway_ids;
 	}
 
 	/**
@@ -46,9 +49,17 @@ final class OrderController {
 	 * @param WC_Order $order
 	 */
 	public function maybe_cancel_transaction( $order_id, $order ): void {
+		if ( ! $order ) {
+			return;
+		}
+
+		if ( ! $this->is_quickpay_order( $order ) ) {
+			return;
+		}
+
 		$auto_cancel_transaction = wc_string_to_bool( $this->settings->get( 'quickpay_cancel_transaction_on_cancel' ) );
 
-		if ( ! $order || ! $auto_cancel_transaction ) {
+		if ( ! $auto_cancel_transaction ) {
 			return;
 		}
 
@@ -181,6 +192,10 @@ final class OrderController {
 	public function maybe_capture_on_order_completed( int $order_id ): void {
 		$order = woocommerce_quickpay_get_order( $order_id );
 		if ( ! $order ) {
+			return;
+		}
+
+		if ( ! $this->is_quickpay_order( $order ) ) {
 			return;
 		}
 
@@ -364,6 +379,18 @@ final class OrderController {
 			0,
 			true
 		);
+	}
+
+	/**
+	 * Returns true if the order's payment method is handled by one of our registered gateways.
+	 * When no gateway IDs are configured, all orders are considered owned (BC).
+	 */
+	private function is_quickpay_order( WC_Order $order ): bool {
+		if ( empty( $this->gateway_ids ) ) {
+			return true;
+		}
+
+		return in_array( $order->get_payment_method(), $this->gateway_ids, true );
 	}
 
 	/**
