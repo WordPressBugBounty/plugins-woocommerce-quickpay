@@ -274,14 +274,15 @@ class MobilePaySubscriptionsGatewayHandler implements GatewayHandlerInterface {
 	 * aq_status_code 50000: Payment failed to execute during the due-date.
 	 * aq_status_code 50001: User rejected the Pending payment in MobilePay.
 	 *
-	 * @param string $transition_to_status
+	 * @param string|null $transition_to_status
 	 * @param WC_Order $order
 	 * @param mixed $transaction
 	 * @param mixed $operation
 	 *
 	 * @return string
 	 */
-	public function payment_cancelled_order_transition_status( string $transition_to_status, WC_Order $order, $transaction, $operation ): string {
+	public function payment_cancelled_order_transition_status( ?string $transition_to_status, WC_Order $order, $transaction, $operation ): string {
+		$transition_to_status = $transition_to_status ?? '';
 		if ( $this->is_cancelled_transaction_failed( $operation, $order ) ) {
 			$transition_to_status = 'failed';
 		}
@@ -293,13 +294,14 @@ class MobilePaySubscriptionsGatewayHandler implements GatewayHandlerInterface {
 	 * Do not mark the payment as complete if the payment is a scheduled payment from MobilePay Subscriptions. Scheduled payments can still fail even when authorized,
 	 * so we should wait marking the payment as complete until the capture.
 	 *
-	 * @param bool $authorize
+	 * @param bool|null $authorize
 	 * @param $order
 	 * @param $data
 	 *
 	 * @return bool
 	 */
-	public function callback_payment_authorized_complete_payment( bool $authorize, $order ): bool {
+	public function callback_payment_authorized_complete_payment( ?bool $authorize, $order ): bool {
+		$authorize = $authorize ?? false;
 		if ( $authorize && $order->get_payment_method() === self::GATEWAY_ID ) {
 			return false;
 		}
@@ -310,14 +312,15 @@ class MobilePaySubscriptionsGatewayHandler implements GatewayHandlerInterface {
 	/**
 	 * Append the acquirer status message to the cancellation note for MobilePay-specific error codes.
 	 *
-	 * @param string $note
+	 * @param string|null $note
 	 * @param WC_Order $order
 	 * @param mixed $transaction
 	 * @param mixed $operation
 	 *
 	 * @return string
 	 */
-	public function payment_cancelled_order_transition_status_note( string $note, WC_Order $order, $transaction, $operation ): string {
+	public function payment_cancelled_order_transition_status_note( ?string $note, WC_Order $order, $transaction, $operation ): string {
+		$note = $note ?? '';
 		if ( $this->is_cancelled_transaction_failed( $operation, $order ) ) {
 			$note = sprintf( '%s - %s', $note, $operation->aq_status_msg );
 		}

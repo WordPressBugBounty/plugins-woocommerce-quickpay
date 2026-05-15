@@ -31,14 +31,14 @@ final class SubscriptionActionsController {
 	/**
 	 * Handles the bulk action for creating payment links on subscriptions.
 	 *
-	 * @param string $redirect_url
-	 * @param string $action
+	 * @param string|null $redirect_url
+	 * @param string|null $action
 	 * @param int[] $subscription_ids
 	 *
-	 * @return string
+	 * @return string|null
 	 */
-	public function handle_bulk_action( string $redirect_url, string $action, array $subscription_ids ): string {
-		if ( 'quickpay_create_payment_link' !== $action || ! current_user_can( 'manage_woocommerce' ) ) {
+	public function handle_bulk_action( ?string $redirect_url, ?string $action, array $subscription_ids ): ?string {
+		if ( 'quickpay_create_payment_link' !== ( $action ?? '' ) || ! current_user_can( 'manage_woocommerce' ) ) {
 			return $redirect_url;
 		}
 

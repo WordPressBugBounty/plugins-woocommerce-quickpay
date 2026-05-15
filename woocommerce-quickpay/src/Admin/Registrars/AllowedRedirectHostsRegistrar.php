@@ -18,11 +18,12 @@ final class AllowedRedirectHostsRegistrar {
 	}
 
 	/**
-	 * @param string[] $hosts
+	 * @param string[]|null $hosts
 	 *
 	 * @return string[]
 	 */
-	public function filter_allowed_hosts( array $hosts ): array {
+	public function filter_allowed_hosts( ?array $hosts ): array {
+		$hosts = $hosts ?? [];
 		foreach ( $this->hosts as $h ) {
 			if ( ! in_array( $h, $hosts, true ) ) {
 				$hosts[] = $h;

@@ -90,20 +90,20 @@ final class OrderActionsController {
 	/**
 	 * Handles the bulk action for creating payment links.
 	 *
-	 * @param string $redirect_url
-	 * @param string $action
+	 * @param string|null $redirect_url
+	 * @param string|null $action
 	 * @param int[] $order_ids
 	 *
-	 * @return string
+	 * @return string|null
 	 */
-	public function handle_bulk_action( string $redirect_url, string $action, array $order_ids ): string {
-		if ( 'quickpay_capture_recurring' === $action && current_user_can( 'manage_woocommerce' ) ) {
+	public function handle_bulk_action( ?string $redirect_url, ?string $action, array $order_ids ): ?string {
+		if ( 'quickpay_capture_recurring' === ( $action ?? '' ) && current_user_can( 'manage_woocommerce' ) ) {
 			$processed = $this->bulk_capture_recurring( $order_ids );
 
 			return add_query_arg( [ 'quickpay_bulk_capture_recurring_processed' => $processed ], $redirect_url );
 		}
 
-		if ( 'quickpay_create_payment_link' !== $action ) {
+		if ( 'quickpay_create_payment_link' !== ( $action ?? '' ) ) {
 			return $redirect_url;
 		}
 
@@ -128,15 +128,13 @@ final class OrderActionsController {
 			}
 		}
 
-		$redirect_url = add_query_arg(
+		return add_query_arg(
 			[
 				'quickpay_bulk_payment_link_processed' => $processed,
 				'quickpay_bulk_payment_link_skipped'   => $skipped,
 			],
 			$redirect_url
 		);
-
-		return $redirect_url;
 	}
 
 	/**
@@ -211,7 +209,7 @@ final class OrderActionsController {
 
 		woocommerce_quickpay_add_admin_notice(
 			sprintf(
-				/* translators: %d: number of orders processed */
+			/* translators: %d: number of orders processed */
 				_n( 'QuickPay: Capture initiated for %d renewal order.', 'QuickPay: Capture initiated for %d renewal orders.', $processed, 'woocommerce-quickpay' ),
 				$processed
 			)

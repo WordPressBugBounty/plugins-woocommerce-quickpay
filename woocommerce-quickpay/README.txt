@@ -3,7 +3,7 @@ Contributors: PerfectSolution
 Tags: gateway, payment, quickpay, woocommerce, subscriptions
 Requires at least: 6.7
 Tested up to: 6.8
-Stable tag: 8.0.1
+Stable tag: 8.0.2
 License: GPLv2
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -36,6 +36,13 @@ in the plugin settings, but transaction details may include order information an
 Link to Quickpay terms of service: https://quickpay.net/terms-of-service/
 
 == Changelog ==
+= 8.0.2 =
+* Fix: WordPress filter callbacks are now tolerant of null input from other plugins in the filter chain, preventing fatal type errors.
+* Fix: Bulk action handlers (`OrderActionsController`, `SubscriptionActionsController`) accept nullable action and redirect URL values.
+* Fix: `AllowedRedirectHostsRegistrar::filter_allowed_hosts` handles null host array gracefully.
+* Fix: `SpamShieldIntegration::handle_spam_check_bypass` accepts nullable bypass value.
+* Fix: `MobilePaySubscriptionsGatewayHandler` — three filter callbacks hardened against null input.
+
 = 8.0.1 =
 * Fix: auto-capture and cancel logic for orders were incorrectly triggered on all gateways, causing warnings to be shown in the admin.
 

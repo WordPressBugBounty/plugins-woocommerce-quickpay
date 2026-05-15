@@ -15,11 +15,11 @@ class SpamShieldIntegration implements ExtensionIntegrationInterface {
 	}
 
 	/**
-	 * @param bool $bypass
+	 * @param mixed $bypass
 	 *
 	 * @return bool
 	 */
-	public function handle_spam_check_bypass( bool $bypass ): bool {
+	public function handle_spam_check_bypass( $bypass ): bool {
 		return isset( $_GET['wc-api'] ) && strtolower( sanitize_text_field( wp_unslash( $_GET['wc-api'] ) ) ) === 'wc_quickpay';
 	}
 }
