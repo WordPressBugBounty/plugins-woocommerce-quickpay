@@ -2,6 +2,7 @@
 namespace QuickpayPSP\Providers;
 
 use QuickpayPSP\Support\Config\GatewaySettingsProvider;
+use QuickpayPSP\WooCommerce\Gateways\PaypalGateway;
 use QuickpayPSP\WooCommerce\Gateways\VippsMobilePaySubscriptionsGateway;
 use QuickpayPSP\WooCommerce\Gateways\GatewayRegistry;
 use QuickpayPSP\WooCommerce\Gateways\AnydayGateway;
@@ -58,6 +59,7 @@ class GatewayProvider implements ServiceProviderInterface {
 			$r->add( GooglePayGateway::class );
 			$r->add( IdealGateway::class );
 			$r->add( KlarnaGateway::class );
+			$r->add( PaypalGateway::class );
 			$r->add( ResursGateway::class );
 			$r->add( SofortGateway::class );
 			$r->add( SwishGateway::class );

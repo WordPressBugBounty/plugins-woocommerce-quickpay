@@ -3,7 +3,7 @@ Contributors: PerfectSolution
 Tags: gateway, payment, quickpay, woocommerce, subscriptions
 Requires at least: 6.7
 Tested up to: 6.8
-Stable tag: 8.0.2
+Stable tag: 8.0.3
 License: GPLv2
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -36,6 +36,9 @@ in the plugin settings, but transaction details may include order information an
 Link to Quickpay terms of service: https://quickpay.net/terms-of-service/
 
 == Changelog ==
+= 8.0.3 =
+* Fix: Paypal not being properly initialized causing it to be hidden from the payment methods list.
+
 = 8.0.2 =
 * Fix: WordPress filter callbacks are now tolerant of null input from other plugins in the filter chain, preventing fatal type errors.
 * Fix: Bulk action handlers (`OrderActionsController`, `SubscriptionActionsController`) accept nullable action and redirect URL values.
